@@ -7,12 +7,14 @@ hide:
 # Tools of the Trade: Git & GitHub
 
 <p class="hero-subtitle">A hands-on introduction to version control for the
-<strong>Belle II / DUNE analysis workshop</strong>.</p>
+<strong>EPIC: Exploring particle Physics Integrated with Computing Summer Program</strong>.</p>
 
-Over the coming weeks your team will pick a decay, generate Monte Carlo, isolate the
-signal region, fit it, extract a branching ratio, and build a poster — **together**.
-Git and GitHub are the tools that let several people work on the same analysis without
-emailing `analysis_final_v3_REALLY_final.py` around.
+Over this week you will learn how to work as a team in a real-time expirence framed
+within the context of the moderm experimental particle physics. Your
+team will pick a real-world physics problem, generate Monte Carlo simulations, 
+isolate the signal region, tune the simulation, extract a branching ratio, 
+and create a poster—together. Git and GitHub are the tools that allow multiple 
+people to work on the same analysis without having to email the `analysis_final_v3_REALLY_final.py` file.
 
 <div class="grid cards" markdown>
 
