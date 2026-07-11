@@ -13,6 +13,17 @@
   margin: -0.4rem 0 1.4rem 0;
 }
 
+/* Author byline under the hero subtitle */
+.byline {
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  margin: -0.8rem 0 1.6rem 0;
+}
+.byline a {
+  color: var(--md-accent-fg-color);
+  text-decoration: none;
+}
+
 /* Card grid: gentle lift on hover */
 .md-typeset .grid.cards > ul > li {
   border-radius: 0.6rem;

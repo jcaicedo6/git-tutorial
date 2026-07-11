@@ -9,6 +9,9 @@ hide:
 <p class="hero-subtitle">A hands-on introduction to version control for the
 <strong>EPIC: Exploring particle Physics Integrated with Computing Summer Program</strong>.</p>
 
+<p class="byline">Created by <strong>Johan Caicedo</strong> ·
+<a href="https://github.com/jcaicedo6">@jcaicedo6</a></p>
+
 Over this week you will learn how to work as a team in a real-time expirence framed
 within the context of the moderm experimental particle physics. Your
 team will pick a real-world physics problem, generate Monte Carlo simulations, 
