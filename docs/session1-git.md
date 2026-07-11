@@ -9,8 +9,9 @@
     (`git --version`)
 
 !!! note "How to follow along"
-    Type every command yourself. Lines starting with `$` are commands you type (don't
-    type the `$`). Everything else is example output. Every code block has a
+    Type every command yourself in your terminal. A code block with a **filename banner**
+    (like `README.md`) shows *file contents* — put those into the file with your text
+    editor. A block labelled `output` shows what git prints back. Every code block has a
     :material-content-copy: copy button in its top-right corner.
 
 ---
@@ -88,12 +89,69 @@ nothing to commit (working tree clean)
 
 ## 3. Your first file and first commit
 
-Create a short README describing your (imaginary) analysis:
+Create a short README describing your (imaginary) analysis.
 
-```bash
-echo "# B -> D pi analysis" > README.md
-echo "Team: The Charmed Quarks" >> README.md
-```
+!!! note "Pick your text editor — you'll use it all session"
+    You'll create a few small text files (`README.md`, `fit.py`, `.gitignore`). Use
+    whichever editor you like — **choose a tab below and every step on this page follows
+    your choice.** New to this? **VS Code** is the friendliest window-and-mouse editor;
+    **nano** is the simplest one inside the terminal.
+
+=== ":material-microsoft-visual-studio-code: VS Code"
+
+    Open a new file:
+
+    ```bash
+    code README.md
+    ```
+
+    Type these two lines, then save with ++cmd+s++ (++ctrl+s++ on Windows/Linux):
+
+    ```title="README.md"
+    # B -> D pi analysis
+    Team: The Charmed Quarks
+    ```
+
+=== ":material-console: nano"
+
+    Open the file in nano:
+
+    ```bash
+    nano README.md
+    ```
+
+    Type the two lines below, then **save and exit**: ++ctrl+o++ then ++enter++ to write,
+    then ++ctrl+x++ to quit.
+
+    ```title="README.md"
+    # B -> D pi analysis
+    Team: The Charmed Quarks
+    ```
+
+=== ":material-console: Vim"
+
+    Open the file in Vim:
+
+    ```bash
+    vim README.md
+    ```
+
+    Press ++i++ to start typing, enter the two lines, then press ++esc++ and type `:wq`
+    followed by ++enter++ to save and quit.
+
+    ```title="README.md"
+    # B -> D pi analysis
+    Team: The Charmed Quarks
+    ```
+
+=== ":material-flash: Quick shortcut"
+
+    No editor needed — write the two lines straight from the terminal:
+
+    ```bash
+    echo "# B -> D pi analysis" > README.md
+    echo "Team: The Charmed Quarks" >> README.md
+    ```
 
 Run `git status` again — git sees the file but isn't tracking it yet:
 
@@ -140,13 +198,73 @@ git log
 
 ## 4. Make a change and see the diff
 
-Real work is a series of changes. Add an analysis script and update the README:
+Real work is a series of changes. Create an analysis script `fit.py` **and** add a status
+line to your README — using the same editor you picked above:
 
-```bash
-echo "signal_region = (5.20, 5.30)  # GeV" > fit.py
-echo "print('fitting signal region', signal_region)" >> fit.py
-echo "Status: setting up the fit" >> README.md
-```
+=== ":material-microsoft-visual-studio-code: VS Code"
+
+    Create `fit.py`:
+
+    ```bash
+    code fit.py
+    ```
+
+    ```title="fit.py"
+    signal_region = (5.20, 5.30)  # GeV
+    print('fitting signal region', signal_region)
+    ```
+
+    Then open the README (`code README.md`) and add one line at the bottom:
+
+    ```title="add to the end of README.md"
+    Status: setting up the fit
+    ```
+
+=== ":material-console: nano"
+
+    ```bash
+    nano fit.py
+    ```
+
+    Type the two lines, then ++ctrl+o++ ++enter++ ++ctrl+x++ to save and exit:
+
+    ```title="fit.py"
+    signal_region = (5.20, 5.30)  # GeV
+    print('fitting signal region', signal_region)
+    ```
+
+    Do the same for the README (`nano README.md`), adding one line at the bottom:
+
+    ```title="add to the end of README.md"
+    Status: setting up the fit
+    ```
+
+=== ":material-console: Vim"
+
+    ```bash
+    vim fit.py
+    ```
+
+    Press ++i++, type the two lines, then ++esc++ `:wq` ++enter++ to save and quit:
+
+    ```title="fit.py"
+    signal_region = (5.20, 5.30)  # GeV
+    print('fitting signal region', signal_region)
+    ```
+
+    Repeat for the README (`vim README.md`), adding one line at the bottom:
+
+    ```title="add to the end of README.md"
+    Status: setting up the fit
+    ```
+
+=== ":material-flash: Quick shortcut"
+
+    ```bash
+    echo "signal_region = (5.20, 5.30)  # GeV" > fit.py
+    echo "print('fitting signal region', signal_region)" >> fit.py
+    echo "Status: setting up the fit" >> README.md
+    ```
 
 Ask git what changed, then see the *exact* lines with `git diff`:
 
@@ -183,11 +301,13 @@ git commit -m "Add initial fit script and update status"
 
 ## 5. Undo: the time machine in action
 
-The whole point of version control is that mistakes are cheap. Say you wreck `fit.py`:
+The whole point of version control is that mistakes are cheap. Open `fit.py` in your editor
+and wreck it — delete the good lines and type some nonsense. In a hurry? This shortcut
+overwrites the file with junk for you:
 
 ```bash
-echo "DELETE EVERYTHING lol" > fit.py
-git diff fit.py      # shows your good lines removed, the bad line added
+echo "DELETE EVERYTHING lol" > fit.py   # replace fit.py with junk
+git diff fit.py                         # your good lines removed, junk added
 ```
 
 You haven't committed this, so git can throw it away and restore the last committed
@@ -212,7 +332,16 @@ Look at the file — it's back to normal. The bad edit never made it into histor
     Git is for **code and text**, *not* multi-gigabyte data. Committing a big ROOT file
     clogs your team's repo **forever**.
 
-Tell git to ignore certain files by creating a `.gitignore`:
+Tell git to ignore certain files by creating a file named `.gitignore` with these three
+lines:
+
+```title=".gitignore"
+*.root
+*.log
+__pycache__/
+```
+
+Create it in your editor (e.g. `code .gitignore`), or use the shortcut:
 
 ```bash
 echo "*.root" > .gitignore
