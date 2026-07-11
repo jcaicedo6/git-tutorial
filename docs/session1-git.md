@@ -112,6 +112,19 @@ Create a short README describing your (imaginary) analysis.
     Team: The Charmed Quarks
     ```
 
+    ??? question "`code: command not found`?"
+        The `code` command isn't on your PATH yet — enable it once:
+
+        1. Open VS Code.
+        2. Press ++cmd+shift+p++ (++ctrl+shift+p++ on Windows/Linux) to open the
+           **Command Palette**.
+        3. Type **Shell Command: Install 'code' command in PATH** and select it.
+        4. Open a **new** terminal window and try `code README.md` again.
+
+        On Windows, the `code` command usually works out of the box if you ticked
+        *"Add to PATH"* during VS Code's install. No VS Code at all? Grab it from
+        [code.visualstudio.com](https://code.visualstudio.com), or just use another tab.
+
 === ":material-console: nano"
 
     Open the file in nano:
