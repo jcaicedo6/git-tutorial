@@ -33,17 +33,11 @@ time machine (local); next session, collaboration (GitHub).
 
 ---
 
-## 1. Tell git who you are
+## 1. Confirm you're set up
 
-Git stamps every snapshot with your name and email. Set them once (use the **same email**
-you'll use for GitHub next session):
-
-```bash
-git config --global user.name  "Your Name"
-git config --global user.email "you@example.com"
-```
-
-Check it worked:
+You installed git, made a GitHub account, set your identity, and added an SSH key back in
+[**Setup**](setup.md). Let's make sure git knows who you are — every snapshot is stamped
+with this:
 
 ```bash
 git config --global --list
@@ -54,8 +48,9 @@ user.name=Your Name
 user.email=you@example.com
 ```
 
-!!! tip
-    `--global` means "for all my projects on this laptop." You only do this once, ever.
+!!! tip "Blank output?"
+    You skipped the [Setup](setup.md) page. Jump back and do step 3 (identity) and step 4
+    (SSH key) — the rest of the workshop assumes both are done.
 
 ---
 

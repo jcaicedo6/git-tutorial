@@ -69,6 +69,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - "Setup · Get Ready": setup.md
   - "Session 1 · Git": session1-git.md
   - "Session 2 · GitHub": session2-github.md
   - Cheat Sheet: cheatsheet.md

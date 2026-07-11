@@ -18,6 +18,17 @@ people to work on the same analysis without having to email the `analysis_final_
 
 <div class="grid cards" markdown>
 
+-   :material-rocket-launch:{ .lg .middle } &nbsp; **Setup · Get Ready**
+
+    ---
+
+    Do this first. Install git, make a GitHub account, and connect your laptop with an
+    SSH key — with instructions for Windows, macOS, and Linux.
+
+    :octicons-clock-16: ~15–20 min
+
+    [:octicons-arrow-right-24: Start here](setup.md)
+
 -   :material-source-branch:{ .lg .middle } &nbsp; **Session 1 · Git**
 
     ---
@@ -33,8 +44,8 @@ people to work on the same analysis without having to email the `analysis_final_
 
     ---
 
-    Create a GitHub account, push your repo to the cloud, and learn the loop your
-    team will use every day: `clone → pull → commit → push`.
+    Push your repo to the cloud over SSH and learn the loop your team will use every
+    day: `clone → pull → commit → push`.
 
     :octicons-clock-16: ~15 min
 
@@ -64,19 +75,6 @@ people to work on the same analysis without having to email the `analysis_final_
 
 ## Before you start :material-check-circle:{ .accent }
 
-Open a terminal and check that git is installed:
-
-```bash
-git --version
-```
-
-You should see something like `git version 2.40.0`. If you get **"command not found"**,
-raise your hand — or grab an installer:
-
-- **git:** [git-scm.com/downloads](https://git-scm.com/downloads) (on macOS,
-  `xcode-select --install` also works)
-- **GitHub CLI** (used in Session 2): [cli.github.com](https://cli.github.com)
-
 !!! tip "Why should a physicist care?"
     Three problems show up in *every* team analysis, and git solves all three:
 
@@ -85,4 +83,6 @@ raise your hand — or grab an installer:
     2. **"I need yesterday's version back."** → git keeps every saved version forever.
     3. **"Anna and I both edited the same file."** → git merges work from many people.
 
-That's it — open [**Session 1**](session1-git.md) and let's go. :rocket:
+New to all of this? Start with [**Setup · Get Ready**](setup.md) — it walks you through
+installing git, creating a GitHub account, and adding an SSH key on **Windows, macOS, or
+Linux**. Once everyone is set up, move on to [**Session 1**](session1-git.md). :rocket:

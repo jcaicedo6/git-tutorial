@@ -1,64 +1,25 @@
-# Session 2 · Make Your Own GitHub Account & Repo
+# Session 2 · Put Your Repo on GitHub
 
 !!! abstract "Goal"
-    Create a GitHub account, put the repo from Session 1 online, and understand how your
-    team will share one analysis repository.
+    Take the repo you built in Session 1, put it online on GitHub over SSH, and learn the
+    loop your team will use every day: `clone → pull → commit → push`.
 
-    :octicons-clock-16: ~15 min &nbsp;·&nbsp; :material-tools: the `my_decay_analysis`
-    repo from Session 1, a browser, and an email address
+    :octicons-clock-16: ~15 min &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo
+    from Session 1, plus everything from [Setup](setup.md) (account + SSH key)
 
 !!! info "Git vs. GitHub"
     **git** is the tool on your laptop (Session 1). **GitHub** is a website that hosts git
     repositories in the cloud so people can share them. Same idea as "editing a document"
     vs. "putting it on Google Drive."
 
----
-
-## 1. Create your account
-
-1. Go to **[github.com](https://github.com)** and click **Sign up**.
-2. Use your **university email** where possible, pick a **username** (this is public —
-   `anna-particles` beats `xX_darkmatter_Xx`), and set a password.
-3. Verify your email (check your inbox for a code).
-
-!!! tip "🎓 Student perk"
-    Apply for the **[GitHub Student Developer Pack](https://education.github.com/pack)** —
-    free private repos, CI minutes, and tools. Do this later; approval can take a day.
+!!! success "You're already authenticated"
+    In [Setup](setup.md) you created your account and added an SSH key, and `ssh -T
+    git@github.com` greeted you by name. That means you can push and pull **without ever
+    typing a password** — we'll use the SSH address (`git@github.com:...`) throughout.
 
 ---
 
-## 2. Set up authentication
-
-GitHub no longer accepts your account password from the command line. Pick one:
-
-=== ":material-console: GitHub CLI (recommended)"
-
-    The GitHub CLI logs you in through the browser — easiest for beginners.
-
-    ```bash
-    gh auth login
-    ```
-
-    Answer the prompts: **GitHub.com** → **HTTPS** → **Login with a web browser**. Copy
-    the one-time code it shows, press ++enter++, paste it in the browser, and authorize.
-    Done — your laptop can now talk to GitHub.
-
-    No `gh`? Install it from [cli.github.com](https://cli.github.com), or use the token tab.
-
-=== ":material-key: Personal Access Token"
-
-    If you can't install `gh`:
-
-    1. Go to **github.com → Settings → Developer settings → Personal access tokens →
-       Tokens (classic) → Generate new token**.
-    2. Tick the **`repo`** scope and generate.
-    3. **Copy the token** and save it somewhere safe — you can't see it again.
-
-    When git asks for a **password** during `push`, paste the **token** instead.
-
----
-
-## 3. Create an empty repository on GitHub
+## 1. Create an empty repository on GitHub
 
 1. Click the **+** (top-right) → **New repository**.
 2. **Repository name:** `my_decay_analysis` (matching your folder is tidy, not required).
@@ -70,12 +31,16 @@ GitHub no longer accepts your account password from the command line. Pick one:
     Do **not** tick "Add a README", ".gitignore", or "license". You already have files
     locally, and adding them here creates a conflict on your first push.
 
-5. Click **Create repository**. GitHub shows a URL like
-   `https://github.com/your-username/my_decay_analysis.git` — keep it handy.
+5. Click **Create repository**. On the next page, click the **SSH** button and copy the
+   address — it looks like `git@github.com:your-username/my_decay_analysis.git`.
+
+!!! danger "Grab the SSH URL, not the HTTPS one"
+    GitHub shows two addresses. Because you set up an SSH key, use the one that starts with
+    **`git@github.com:`** — *not* the `https://…` one. Click the **SSH** tab to reveal it.
 
 ---
 
-## 4. Connect your local repo and push it
+## 2. Connect your local repo and push it
 
 Back in your terminal, inside `my_decay_analysis`:
 
@@ -83,11 +48,11 @@ Back in your terminal, inside `my_decay_analysis`:
 cd my_decay_analysis          # if you're not already there
 ```
 
-Tell git where the online copy ("remote") lives — GitHub calls it `origin`. **Use the URL
-from your own page:**
+Tell git where the online copy ("remote") lives — GitHub calls it `origin`. **Use the SSH
+URL from your own page:**
 
 ```bash
-git remote add origin https://github.com/your-username/my_decay_analysis.git
+git remote add origin git@github.com:your-username/my_decay_analysis.git
 ```
 
 Now **push** your commits up to GitHub:
@@ -96,20 +61,30 @@ Now **push** your commits up to GitHub:
 git push -u origin main
 ```
 
-!!! note
-    If it asks for a username/password and you chose the token option, paste your **token**
-    as the password.
-
-Refresh your GitHub repo page — **your files are there!** README, `fit.py`, `.gitignore`,
-and the full commit history you built in Session 1. :tada:
+Because your SSH key is set up, this just works — no password prompt. Refresh your GitHub
+repo page and **your files are there!** README, `fit.py`, `.gitignore`, and the full commit
+history you built in Session 1. :tada:
 
 !!! tip
     `-u origin main` links your local `main` to GitHub's `main`. After this first push, you
     just type `git push`.
 
+??? failure "Got `git@github.com: Permission denied (publickey)`?"
+    Your SSH key isn't being found. Re-run the test from [Setup step 4e](setup.md#4e-test-the-connection):
+    ```bash
+    ssh -T git@github.com
+    ```
+    If that fails too, your key wasn't added to the agent or to GitHub — redo
+    [Setup step 4](setup.md#4-connect-your-laptop-to-github-with-an-ssh-key). If it succeeds
+    but `push` still fails, check you used the **SSH** URL (`git@github.com:`), not HTTPS:
+    ```bash
+    git remote -v          # should show git@github.com:...
+    git remote set-url origin git@github.com:your-username/my_decay_analysis.git
+    ```
+
 ---
 
-## 5. The everyday team loop
+## 3. The everyday team loop
 
 Once a repo is on GitHub, this is the rhythm you'll repeat all workshop:
 
@@ -136,10 +111,10 @@ git push                 # (2)! share your work
 ### How your team will actually set up
 
 One person creates the team repo on GitHub and adds the others as collaborators
-(**repo → Settings → Collaborators → Add people**). Everyone else runs:
+(**repo → Settings → Collaborators → Add people**). Everyone else clones it **over SSH**:
 
 ```bash
-git clone https://github.com/team-name/decay-analysis.git
+git clone git@github.com:team-name/decay-analysis.git
 cd decay-analysis
 ```
 
@@ -152,16 +127,15 @@ team's project. From then on it's just the pull → edit → commit → push loo
 
 <div class="checklist" markdown>
 
-- [x] A GitHub account
-- [x] Working authentication (`gh auth login` or a token)
-- [x] Your Session 1 repo live on GitHub
-- [x] The team workflow: **clone → pull → commit → push**
+- [x] Your Session 1 repo is live on GitHub
+- [x] You push and pull over SSH with no password
+- [x] You know the team workflow: **clone → pull → commit → push**
 
 </div>
 
 When your team forms, pick one person to create the shared repo, add everyone as
-collaborators, and you're ready to build your decay analysis together — MC configs, cuts,
-fits, branching ratio, and poster figures, all versioned and shared.
+collaborators, and you're ready to build your analysis together — MC configs, cuts, fits,
+branching ratio, and poster figures, all versioned and shared.
 
 [Open the cheat sheet](cheatsheet.md){ .md-button .md-button--primary }
 [Back to Session 1](session1-git.md){ .md-button }

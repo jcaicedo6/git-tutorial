@@ -12,17 +12,23 @@ Working dir  --add-->  Staging  --commit-->  Repository  --push-->  GitHub
 
 ## One-time setup
 
+See the [Setup page](setup.md) for the full walkthrough (install + account + SSH).
+
 ```bash
+git --version                     # check git is installed
 git config --global user.name  "Your Name"
 git config --global user.email "you@example.com"
-gh auth login                     # log in to GitHub
+
+# SSH key: connect this laptop to GitHub (do once)
+ssh-keygen -t ed25519 -C "you@example.com"
+ssh -T git@github.com             # test — greets you by username
 ```
 
 ## Start a repo
 
 ```bash
 git init                          # new repo here
-git clone <url>                   # copy a team repo from GitHub
+git clone git@github.com:team/repo.git   # copy a team repo (SSH)
 ```
 
 ## The daily loop ⭐ memorize this
@@ -65,7 +71,8 @@ git merge my-idea                 # bring my-idea's work into current branch
 ## Connect to GitHub
 
 ```bash
-git remote add origin <url>       # link local repo to GitHub
+git remote add origin git@github.com:you/repo.git   # link to GitHub (SSH)
+git remote -v                     # check the URL (should be git@github.com:...)
 git push -u origin main           # first push (sets the link)
 git push                          # every push after that
 ```
