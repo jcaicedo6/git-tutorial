@@ -113,13 +113,25 @@ Create a short README describing your (imaginary) analysis.
     ```
 
     ??? question "`code: command not found`?"
-        The `code` command isn't on your PATH yet — enable it once:
+        The `code` command isn't on your PATH yet. Fix it once, either way:
+
+        **From VS Code (easiest):**
 
         1. Open VS Code.
         2. Press ++cmd+shift+p++ (++ctrl+shift+p++ on Windows/Linux) to open the
            **Command Palette**.
         3. Type **Shell Command: Install 'code' command in PATH** and select it.
         4. Open a **new** terminal window and try `code README.md` again.
+
+        **From the terminal (macOS):** add VS Code's `bin` folder to your PATH by hand,
+        then reload your shell:
+
+        ```bash
+        echo 'export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"' >> ~/.zshrc
+        source ~/.zshrc
+        ```
+
+        (Using bash instead of zsh? Write to `~/.bashrc` and `source ~/.bashrc`.)
 
         On Windows, the `code` command usually works out of the box if you ticked
         *"Add to PATH"* during VS Code's install. No VS Code at all? Grab it from
