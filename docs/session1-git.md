@@ -409,6 +409,15 @@ git commit -m "Ignore ROOT files, logs, and Python cache"
 A **branch** is a parallel line of work. You'll use these constantly with your team: try
 a new cut on a branch without touching everyone's working `main`.
 
+Now, let's check the current branches you actually havee
+```bash
+git branch    # list the branch of the local repository
+```
+
+```title="output"
+* main
+```
+
 ```bash
 git switch -c try-tighter-cut     # create and move to a new branch
 echo "signal_region = (5.24, 5.29)  # tighter" > fit.py
