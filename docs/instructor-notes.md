@@ -23,11 +23,13 @@ By the end students can, on their own laptops:
 | 0–5 | §1 Check/install git — **poll the room: who has git? who has an account?** |
 | 5–8 | §2 GitHub account — those who have one sign in and wait; help the new ones |
 | 8–10 | §3 `git config` identity |
-| 10–18 | §4 SSH key — the slowest, fiddliest part; circulate and check each `ssh -T` |
+| 10–18 | §4 Connect to GitHub — **HTTPS (Option A) or SSH (Option B)** |
 
-> **This is the session that runs long.** SSH on Windows and macOS Keychain trip people
-> up. Have 1–2 floating helpers. Don't start Session 1 until every `ssh -T git@github.com`
-> greets its owner by name.
+> **This is the session that runs long.** For a fast, low-friction start, steer most
+> students to **HTTPS (Option A)** — a token plus a credential helper, no keygen. Reserve
+> **SSH (Option B)** for those on their own laptop who want passwordless pushes; it's
+> fiddlier (Windows agent, macOS Keychain). Have 1–2 floating helpers. Whichever they pick,
+> the real test is the first `push` in Session 2 — don't linger here waiting for perfection.
 
 ### Session 1 — Git (~30 min)
 | Min | Section |
@@ -76,7 +78,8 @@ git config --global init.defaultBranch main
 | `Author identity unknown` on commit | Skipped Setup step 3 | Set `user.name`/`user.email` |
 | `Permission denied (publickey)` on push/clone | SSH key not in agent or not on GitHub | Redo Setup step 4; verify with `ssh -T git@github.com` |
 | `ssh -T` says permission denied | Key never added to GitHub, or added the **private** key | Add the `.pub` key at github.com → Settings → SSH keys |
-| Push asks for username/password | Used the **HTTPS** URL, not SSH | `git remote set-url origin git@github.com:user/repo.git` |
+| Push asks for username/password (HTTPS) | Normal — GitHub wants a **token**, not the account password | Paste the PAT in the password field; enable a credential helper so it's cached |
+| `remote: Support for password authentication was removed` | Typed account password over HTTPS | Use a Personal Access Token as the password |
 | macOS forgets key each session | No `~/.ssh/config` Keychain entry | Add the `UseKeychain yes` block from Setup step 4b |
 | `ssh-add` says "agent not running" | ssh-agent not started | `eval "$(ssh-agent -s)"` first |
 | Nothing happens on `git add` | That's normal — it's silent | Run `git status` to confirm |

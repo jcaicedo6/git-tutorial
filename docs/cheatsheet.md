@@ -70,12 +70,23 @@ git merge my-idea                 # bring my-idea's work into current branch
 
 ## Connect to GitHub
 
+Two ways to authenticate — use whichever you set up in [Setup](setup.md):
+
 ```bash
-git remote add origin git@github.com:you/repo.git   # link to GitHub (SSH)
-git remote -v                     # check the URL (should be git@github.com:...)
+# HTTPS — paste a Personal Access Token as the password on first push
+git remote add origin https://github.com/you/repo.git
+
+# SSH — passwordless once your key is added
+git remote add origin git@github.com:you/repo.git
+
+git remote -v                     # check which URL you're using
 git push -u origin main           # first push (sets the link)
 git push                          # every push after that
 ```
+
+!!! tip "HTTPS keeps asking for a password?"
+    Turn on a credential helper so the token is remembered:
+    `git config --global credential.helper osxkeychain` (macOS) — Windows already has one.
 
 ## :material-atom: Physics reminders
 

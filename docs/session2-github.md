@@ -1,21 +1,25 @@
 # Session 2 · Put Your Repo on GitHub
 
 !!! abstract "Goal"
-    Take the repo you built in Session 1, put it online on GitHub over SSH, and learn the
-    loop your team will use every day: `clone → pull → commit → push`.
+    Take the repo you built in Session 1, put it online on GitHub, and learn the loop your
+    team will use every day: `clone → pull → commit → push`.
 
     :octicons-clock-16: ~15 min &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo
-    from Session 1, plus everything from [Setup](setup.md) (account + SSH key)
+    from Session 1, plus everything from [Setup](setup.md) (account + a connection method)
 
 !!! info "Git vs. GitHub"
     **git** is the tool on your laptop (Session 1). **GitHub** is a website that hosts git
     repositories in the cloud so people can share them. Same idea as "editing a document"
     vs. "putting it on Google Drive."
 
-!!! success "You're already authenticated"
-    In [Setup](setup.md) you created your account and added an SSH key, and `ssh -T
-    git@github.com` greeted you by name. That means you can push and pull **without ever
-    typing a password** — we'll use the SSH address (`git@github.com:...`) throughout.
+!!! success "HTTPS or SSH — pick the one you set up"
+    In [Setup step 4](setup.md#4-connect-your-laptop-to-github) you chose how to connect:
+
+    - **HTTPS** — you'll paste your Personal Access Token the first time you push (then git
+      remembers it). Repo URLs look like `https://github.com/...`.
+    - **SSH** — passwordless; repo URLs look like `git@github.com:...`.
+
+    **Pick your tab once below and every command on this page matches your choice.**
 
 ---
 
@@ -31,12 +35,18 @@
     Do **not** tick "Add a README", ".gitignore", or "license". You already have files
     locally, and adding them here creates a conflict on your first push.
 
-5. Click **Create repository**. On the next page, click the **SSH** button and copy the
-   address — it looks like `git@github.com:your-username/my_decay_analysis.git`.
+5. Click **Create repository**. On the next page, copy the repo address — click the tab
+   matching how you connected:
 
-!!! danger "Grab the SSH URL, not the HTTPS one"
-    GitHub shows two addresses. Because you set up an SSH key, use the one that starts with
-    **`git@github.com:`** — *not* the `https://…` one. Click the **SSH** tab to reveal it.
+=== ":material-lock: HTTPS"
+
+    Click the **HTTPS** button and copy the address — it looks like
+    `https://github.com/your-username/my_decay_analysis.git`.
+
+=== ":material-key-chain: SSH"
+
+    Click the **SSH** button and copy the address — it looks like
+    `git@github.com:your-username/my_decay_analysis.git`.
 
 ---
 
@@ -48,12 +58,20 @@ Back in your terminal, inside `my_decay_analysis`:
 cd my_decay_analysis          # if you're not already there
 ```
 
-Tell git where the online copy ("remote") lives — GitHub calls it `origin`. **Use the SSH
-URL from your own page:**
+Tell git where the online copy ("remote") lives — GitHub calls it `origin`. **Use the URL
+from your own page:**
 
-```bash
-git remote add origin git@github.com:your-username/my_decay_analysis.git
-```
+=== ":material-lock: HTTPS"
+
+    ```bash
+    git remote add origin https://github.com/your-username/my_decay_analysis.git
+    ```
+
+=== ":material-key-chain: SSH"
+
+    ```bash
+    git remote add origin git@github.com:your-username/my_decay_analysis.git
+    ```
 
 Now **push** your commits up to GitHub:
 
@@ -61,26 +79,53 @@ Now **push** your commits up to GitHub:
 git push -u origin main
 ```
 
-Because your SSH key is set up, this just works — no password prompt. Refresh your GitHub
-repo page and **your files are there!** README, `fit.py`, `.gitignore`, and the full commit
-history you built in Session 1. :tada:
+=== ":material-lock: HTTPS"
+
+    The first time, git asks for your **username** and **password**. Type your GitHub
+    username, then **paste your Personal Access Token** as the password (see
+    [Setup Option A](setup.md#https)). Your credential helper remembers it, so later pushes
+    are silent.
+
+=== ":material-key-chain: SSH"
+
+    Because your SSH key is set up, this just works — no prompt at all.
+
+Refresh your GitHub repo page and **your files are there!** README, `fit.py`, `.gitignore`,
+and the full commit history you built in Session 1. :tada:
 
 !!! tip
     `-u origin main` links your local `main` to GitHub's `main`. After this first push, you
     just type `git push`.
 
-??? failure "Got `git@github.com: Permission denied (publickey)`?"
-    Your SSH key isn't being found. Re-run the test from [Setup step 4e](setup.md#4e-test-the-connection):
+??? failure "Push rejected or authentication failed?"
+    Check your remote URL first — it should match the method you set up:
+
     ```bash
-    ssh -T git@github.com
+    git remote -v
     ```
-    If that fails too, your key wasn't added to the agent or to GitHub — redo
-    [Setup step 4](setup.md#4-connect-your-laptop-to-github-with-an-ssh-key). If it succeeds
-    but `push` still fails, check you used the **SSH** URL (`git@github.com:`), not HTTPS:
-    ```bash
-    git remote -v          # should show git@github.com:...
-    git remote set-url origin git@github.com:your-username/my_decay_analysis.git
-    ```
+
+    === ":material-lock: HTTPS"
+
+        - `Authentication failed` / password not accepted → you typed your **account
+          password** instead of a **token**. Paste your [Personal Access
+          Token](setup.md#https) in the password field.
+        - Wrong URL? Reset it:
+          ```bash
+          git remote set-url origin https://github.com/your-username/my_decay_analysis.git
+          ```
+        - Pasted the wrong token once and now it won't ask again? Clear the saved one:
+          `git credential-cache exit` (Linux) or remove the `github.com` entry from
+          **Keychain Access** (macOS) / **Credential Manager** (Windows).
+
+    === ":material-key-chain: SSH"
+
+        - `git@github.com: Permission denied (publickey)` → your key isn't found. Re-test
+          with `ssh -T git@github.com`; if it fails, redo
+          [Setup Option B](setup.md#ssh).
+        - Wrong URL? Reset it:
+          ```bash
+          git remote set-url origin git@github.com:your-username/my_decay_analysis.git
+          ```
 
 ---
 
@@ -111,12 +156,22 @@ git push                 # (2)! share your work
 ### How your team will actually set up
 
 One person creates the team repo on GitHub and adds the others as collaborators
-(**repo → Settings → Collaborators → Add people**). Everyone else clones it **over SSH**:
+(**repo → Settings → Collaborators → Add people**). Everyone else clones it — with the URL
+style they set up:
 
-```bash
-git clone git@github.com:team-name/decay-analysis.git
-cd decay-analysis
-```
+=== ":material-lock: HTTPS"
+
+    ```bash
+    git clone https://github.com/team-name/decay-analysis.git
+    cd decay-analysis
+    ```
+
+=== ":material-key-chain: SSH"
+
+    ```bash
+    git clone git@github.com:team-name/decay-analysis.git
+    cd decay-analysis
+    ```
 
 `clone` downloads the whole repo **and** its history in one go — that's how you join your
 team's project. From then on it's just the pull → edit → commit → push loop above.
@@ -128,7 +183,7 @@ team's project. From then on it's just the pull → edit → commit → push loo
 <div class="checklist" markdown>
 
 - [x] Your Session 1 repo is live on GitHub
-- [x] You push and pull over SSH with no password
+- [x] You can push and pull (token-cached over HTTPS, or passwordless over SSH)
 - [x] You know the team workflow: **clone → pull → commit → push**
 
 </div>

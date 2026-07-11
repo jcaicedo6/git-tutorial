@@ -36,9 +36,9 @@ time machine (local); next session, collaboration (GitHub).
 
 ## 1. Confirm you're set up
 
-You installed git, made a GitHub account, set your identity, and added an SSH key back in
-[**Setup**](setup.md). Let's make sure git knows who you are — every snapshot is stamped
-with this:
+You installed git, made a GitHub account, set your identity, and connected to GitHub (over
+HTTPS or SSH) back in [**Setup**](setup.md). Let's make sure git knows who you are — every
+snapshot is stamped with this:
 
 ```bash
 git config --global --list
@@ -51,7 +51,7 @@ user.email=you@example.com
 
 !!! tip "Blank output?"
     You skipped the [Setup](setup.md) page. Jump back and do step 3 (identity) and step 4
-    (SSH key) — the rest of the workshop assumes both are done.
+    (connect to GitHub) — the rest of the workshop assumes both are done.
 
 ---
 

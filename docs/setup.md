@@ -127,16 +127,87 @@ user.email=you@example.com
 
 ---
 
-## 4. Connect your laptop to GitHub with an SSH key :material-key-chain:
+## 4. Connect your laptop to GitHub :material-lan-connect:
+
+To `push` and `pull` from a GitHub repo, your laptop has to prove who it is. There are two
+ways to set that up — **you only need one**:
+
+| | :material-lock: **HTTPS** | :material-key-chain: **SSH key** |
+|---|---|---|
+| Setup now | Nothing to generate | One-time key generation |
+| Each push | Paste a token once, then it's cached | Nothing, ever |
+| Best for | Getting started fast; shared / lab machines | Your own laptop, long term |
+
+!!! tip "Which should I pick?"
+    **In a hurry? Use HTTPS** (Option A) — you can start pushing in about a minute. If this
+    is your personal laptop and you'd like truly passwordless pushes forever, set up an
+    **SSH key** (Option B). You can always add SSH later; nothing here locks you in.
+
+### Option A · HTTPS (quickest) {#https}
+
+With HTTPS you use `https://…` repo URLs and there's **nothing to generate**. The one
+wrinkle is the identity/password step:
+
+!!! warning "The HTTPS identity gotcha"
+    On your first `push`, GitHub asks for a **username** and **password** — but it **no
+    longer accepts your account password**. In the password field you paste a **Personal
+    Access Token (PAT)** instead. Set it up once and git remembers it.
+
+**1 · Create a Personal Access Token**
+
+1. GitHub → your avatar → **Settings** → **Developer settings** →
+   **Personal access tokens** → **Tokens (classic)**.
+2. **Generate new token (classic)**, add a note like `my laptop`, set an expiry, and tick
+   the **`repo`** scope.
+3. Click **Generate token** and **copy it now** — you won't see it again. Treat it like a
+   password.
+
+📖 GitHub docs:
+[Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens/creating-a-personal-access-token).
+
+**2 · Make git remember the token** (so you paste it only once) by turning on a credential
+helper for your system:
+
+=== ":material-microsoft-windows: Windows (Git Bash)"
+
+    Nothing to do — **Git Credential Manager** ships with Git for Windows and stores your
+    token automatically after the first push (it may pop up a browser sign-in window).
+
+=== ":material-apple: macOS"
+
+    ```bash
+    git config --global credential.helper osxkeychain
+    ```
+
+=== ":material-linux: Linux"
+
+    ```bash
+    git config --global credential.helper "cache --timeout=3600"   # remembers for 1 hour
+    ```
+
+    For permanent storage instead, install
+    [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager).
+
+You'll actually type the token on your first push in [Session 2](session2-github.md) —
+enter your **username**, then paste the **token** as the password. After that it's silent.
+
+!!! tip "Even easier: the GitHub CLI"
+    Installed `gh`? Run `gh auth login` → **HTTPS** → **Login with a web browser**. It
+    creates and stores the token for you — no manual PAT needed.
+
+That's all HTTPS needs. **You can stop here and move on to Session 1**, or set up an SSH
+key below for passwordless pushes.
+
+### Option B · SSH key (passwordless after a one-time setup) {#ssh}
 
 !!! info "What is an SSH key, and why?"
     An SSH key is a pair of files: a **private key** that stays secret on your laptop, and a
     **public key** you give to GitHub. Together they let your laptop prove who it is — so you
-    can `push` and `pull` **without typing a password every time**. It's the standard, secure
+    can `push` and `pull` **without typing anything each time**. It's the standard, secure
     way to talk to GitHub. See GitHub's overview:
     [About SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh).
 
-### 4a. Generate the key
+#### Generate the key
 
 Run this in your terminal (Windows: **Git Bash**), using **your GitHub email**:
 
@@ -152,7 +223,7 @@ ssh-keygen -t ed25519 -C "you@example.com"
 📖 GitHub docs:
 [Generating a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
 
-### 4b. Add the key to the ssh-agent
+#### Add the key to the ssh-agent
 
 The **ssh-agent** is a helper that holds your key in memory. Start it and add your key:
 
@@ -193,7 +264,7 @@ The **ssh-agent** is a helper that holds your key in memory. Start it and add yo
     ssh-add ~/.ssh/id_ed25519
     ```
 
-### 4c. Copy your **public** key
+#### Copy your **public** key
 
 You'll paste this into GitHub. Copy it with the command for your system:
 
@@ -226,7 +297,7 @@ You'll paste this into GitHub. Copy it with the command for your system:
     Only ever share the file ending in **`.pub`** (the *public* key). **Never** share or paste
     `id_ed25519` (no extension) — that's your *private* key and must stay secret.
 
-### 4d. Add the key to your GitHub account
+#### Add the key to your GitHub account
 
 1. On GitHub: click your avatar → **Settings** → **SSH and GPG keys**.
 2. Click **New SSH key**.
@@ -238,7 +309,7 @@ You'll paste this into GitHub. Copy it with the command for your system:
 📖 GitHub docs:
 [Adding a new SSH key to your account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 
-### 4e. Test the connection
+#### Test the connection {#test-connection}
 
 ```bash
 ssh -T git@github.com
@@ -265,7 +336,8 @@ That "does not provide shell access" part is **normal and expected** — it mean
 - [x] `git --version` works
 - [x] You can sign in to GitHub
 - [x] `git config --global --list` shows your name and email
-- [x] `ssh -T git@github.com` greets you by username
+- [x] You picked a connection method — **HTTPS** (token created + credential helper on)
+      *or* **SSH** (`ssh -T git@github.com` greets you by username)
 
 </div>
 
