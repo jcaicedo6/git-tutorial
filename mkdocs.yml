@@ -1,0 +1,86 @@
+site_name: Git for Physics Analysis
+site_description: A hands-on git & GitHub tutorial for the Belle II / DUNE analysis workshop
+site_author: Johan Caicedo
+site_url: https://jcaicedo6.github.io/git-tutorial/
+
+# --- Where the source lives (edit if your repo has a different name) ---
+repo_name: jcaicedo6/git-tutorial
+repo_url: https://github.com/jcaicedo6/git-tutorial
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  icon:
+    logo: material/source-branch
+    repo: fontawesome/brands/github
+  favicon: https://raw.githubusercontent.com/squidfunk/mkdocs-material/master/docs/assets/favicon.png
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.keys
+
+nav:
+  - Home: index.md
+  - "Session 1 · Git": session1-git.md
+  - "Session 2 · GitHub": session2-github.md
+  - Cheat Sheet: cheatsheet.md
+  - For Instructors: instructor-notes.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jcaicedo6
+      name: Johan Caicedo on GitHub
+  generator: false
+
+copyright: >
+  Made for the Belle II / DUNE analysis workshop ·
+  Content licensed CC BY 4.0
