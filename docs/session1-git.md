@@ -234,7 +234,7 @@ line to your README — using the same editor you picked above:
     code fit.py
     ```
 
-    ```title="fit.py"
+    ```python title="fit.py"
     signal_region = (5.20, 5.30)  # GeV
     print('fitting signal region', signal_region)
     ```
