@@ -187,11 +187,59 @@ In [Session 1 §8](session1-git.md#8-merge-your-work-back-into-main) you merged 
 you push your branch to GitHub and *ask* for it to be merged, so teammates can review the
 diff, comment, and approve first. Let's do one.
 
-Create a feature branch, make a small change, and commit it:
+Create a feature branch:
 
 ```bash
 git switch -c add-mass-plot
-echo "Next step: add the invariant-mass plot" >> README.md
+```
+
+Add a note to the README — using the same editor you picked in Session 1:
+
+=== ":material-microsoft-visual-studio-code: VS Code"
+
+    Open the README and add one line at the bottom, then save (++cmd+s++ / ++ctrl+s++):
+
+    ```bash
+    code README.md
+    ```
+
+    ```title="add to the end of README.md"
+    Next step: add the invariant-mass plot
+    ```
+
+=== ":material-console: nano"
+
+    ```bash
+    nano README.md
+    ```
+
+    Add the line at the bottom, then ++ctrl+o++ ++enter++ ++ctrl+x++ to save and exit:
+
+    ```title="add to the end of README.md"
+    Next step: add the invariant-mass plot
+    ```
+
+=== ":material-console: Vim"
+
+    ```bash
+    vim README.md
+    ```
+
+    Press ++i++, add the line at the bottom, then ++esc++ `:wq` ++enter++ to save and quit:
+
+    ```title="add to the end of README.md"
+    Next step: add the invariant-mass plot
+    ```
+
+=== ":material-flash: Quick shortcut"
+
+    ```bash
+    echo "Next step: add the invariant-mass plot" >> README.md
+    ```
+
+Then stage and commit the change:
+
+```bash
 git add README.md
 git commit -m "Note plan to add the mass plot"
 ```
