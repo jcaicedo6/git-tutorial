@@ -42,6 +42,11 @@ git commit -m "Clear message about WHY"
 git push                          # share your work
 ```
 
+!!! tip "Shortcut once you're comfortable: `git commit -am`"
+    `git commit -am "msg"` stages **and** commits in one step — but only for files git
+    **already tracks**. It **skips new/untracked files**, so stick with `git add` → `git
+    commit` whenever a file is new.
+
 ## Look around
 
 ```bash

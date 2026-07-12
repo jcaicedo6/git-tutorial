@@ -298,10 +298,11 @@ git switch main
 ```
 
 Edit the first line of `fit.py` to read `signal_region = (5.18, 5.32)  # GeV — wider`
-(leave the other lines), then commit:
+(leave the other lines), then stage and commit:
 
 ```bash
-git commit -am "Widen signal region on main"
+git add fit.py
+git commit -m "Widen signal region on main"
 ```
 
 Now **you** start a branch from *before* that change and edit the **same line** differently:
@@ -310,10 +311,12 @@ Now **you** start a branch from *before* that change and edit the **same line** 
 git switch -c retune-region main~1     # branch off the commit BEFORE the widen
 ```
 
-Edit the first line of `fit.py` to `signal_region = (5.24, 5.29)  # GeV — tighter`, then:
+Edit the first line of `fit.py` to `signal_region = (5.24, 5.29)  # GeV — tighter`, then
+stage and commit:
 
 ```bash
-git commit -am "Retune signal region tighter"
+git add fit.py
+git commit -m "Retune signal region tighter"
 ```
 
 Your branch and `main` have now edited the same line from a common starting point. Replay
