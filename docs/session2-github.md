@@ -3,9 +3,9 @@
 !!! abstract "Goal"
     Take the repo you built in Session 1, put it online on GitHub, learn the everyday loop
     (`clone → pull → commit → push`), and finish with the real team workflow: **Pull
-    Requests** and resolving a **merge conflict** with `rebase`.
+    Requests**, resolving a **merge conflict**, and **rebasing** onto the latest `main`.
 
-    :octicons-clock-16: ~15 min core (+~10 min for the collaboration deep-dive, §4–§5)
+    :octicons-clock-16: ~15 min core (+~15 min for the collaboration deep-dive, §4–§6)
     &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo from Session 1, plus
     everything from [Setup](setup.md) (account + a connection method)
 
@@ -285,130 +285,226 @@ git branch -d add-mass-plot
 
 ---
 
-## 5. Update your branch when `main` moves on: `rebase`
+## 5. Merge conflicts: when two branches change the same line
 
-This happens on every team: you start a branch, and while you're working a teammate's Pull
-Request gets **merged into `main`**. Now `main` has moved ahead of where you branched off.
-Before your own PR can go in cleanly, you need to catch your branch up to the new `main` —
-and the tidy way to do that is **rebase**.
+The classic conflict: two teammates each branch off `main` and edit the **same line** of the
+same file. The first branch merges fine. When the second one merges, git can't tell which
+edit should win — so it stops and asks *you*. Let's reproduce it end-to-end (playing both
+teammates) and resolve it by **deciding which change is better**.
+
+**1 · Two branches edit the same line.** First, one teammate widens the region:
+
+```bash
+git switch main
+git switch -c widen-region
+```
+
+Edit the first line of `fit.py` to `signal_region = (5.20, 5.30)  # GeV — wider, more signal`,
+then commit:
+
+```bash
+git add fit.py
+git commit -m "Widen signal region for more signal"
+```
+
+Now the other teammate starts a **separate** branch off `main` and tightens the *same* line:
+
+```bash
+git switch main
+git switch -c tighten-region
+```
+
+Edit that first line to `signal_region = (5.26, 5.29)  # GeV — tighter, less background`, then
+commit:
+
+```bash
+git add fit.py
+git commit -m "Tighten signal region to cut background"
+```
+
+**2 · Merge the first branch — no problem.** `widen-region` branched straight off `main`, so
+it merges cleanly:
+
+```bash
+git switch main
+git merge widen-region
+```
+
+```title="output"
+Updating a1b2c3d..c0ffee1
+Fast-forward
+ fit.py | 2 +-
+```
+
+**3 · Merge the second branch — conflict!** `tighten-region` changed the same line that
+`widen-region` just changed on `main`, so git can't reconcile them on its own:
+
+```bash
+git merge tighten-region
+```
+
+```title="output"
+Auto-merging fit.py
+CONFLICT (content): Merge conflict in fit.py
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+Open `fit.py` — git shows **both versions**, separated by markers:
+
+```python title="fit.py (with conflict markers)"
+<<<<<<< HEAD
+signal_region = (5.20, 5.30)  # GeV — wider, more signal
+=======
+signal_region = (5.26, 5.29)  # GeV — tighter, less background
+>>>>>>> tighten-region
+```
+
+- The part **above** `=======` (`HEAD`) is what's on `main` now — the *wider* window.
+- The part **below** is coming from `tighten-region` — the *tighter* window.
+
+**4 · Decide which change is best.** This is a physics choice, not a git one: you and your
+teammate talk it over and agree the tighter window rejects more background. So keep that line,
+**delete all three marker lines**, and drop the wider one:
+
+```python title="fit.py (resolved)"
+signal_region = (5.26, 5.29)  # GeV — tighter window (agreed: less background)
+```
+
+Stage the resolved file and commit to finish the merge:
+
+```bash
+git add fit.py
+git commit -m "Merge tighten-region; keep the tighter window (less background)"
+```
+
+Run it to confirm nothing broke, then tidy up the two branches:
+
+```bash
+python fit.py
+git branch -d widen-region tighten-region
+```
+
+!!! tip "`git status` guides you through a conflict"
+    Stuck mid-conflict? Run `git status` — it lists the files "both modified" and reminds you
+    to `git add` them once fixed. Want to bail out completely? `git merge --abort` restores
+    everything to just before the merge.
+
+---
+
+## 6. Rebase: pull `main`'s new work into your branch
+
+The most common real situation: you're partway through a feature on your own branch, when a
+teammate's PR gets **merged into `main`** — touching a line you're also editing. You want
+`main`'s new work **underneath yours** before you carry on. You bring it in with **rebase** —
+and because you both changed the same line, you'll resolve a conflict that ends *differently*
+from the merge in §5.
 
 !!! info "What is `rebase`, in one picture?"
-    Your branch is a couple of commits stacked on top of `main`. When `main` gets new
-    commits, your stack is now based on an *old* `main`. **`git rebase main` lifts your
-    commits off and re-plays them on top of the *latest* `main`** — as if you'd started your
-    branch today. You get a clean, straight history instead of a tangle.
+    Your branch is a couple of commits stacked on top of `main`. When `main` gets new commits,
+    your stack is still based on the *old* `main`. **`git rebase main` lifts your commits off
+    and re-plays them on top of the *latest* `main`** — as if you'd started your branch today.
+    You get a clean, straight history instead of a tangle.
 
     ```
     Before rebase                        After  git rebase main
 
-    A───B───C  (main, +teammate's C)     A───B───C  (main)
+    A───B───C  (main, +merged commit C)  A───B───C  (main)
          \                                        \
-          X───Y  (your branch, based             X'──Y'  (your commits, replayed
-                  on the old main at B)                    on top of the new main)
+          X  (your branch, based on               X'  (your commit, replayed
+              the old main at B)                       on top of the new main)
     ```
 
-Let's walk through it. We'll play the teammate too, so you can reproduce the whole thing on
-your own laptop.
-
-**1 · Start your branch and make your change.** You set out to retune the signal region:
+**1 · Start your branch and change a line.** You begin retuning the region:
 
 ```bash
 git switch main
 git switch -c retune-region
 ```
 
-Edit the first line of `fit.py` to `signal_region = (5.22, 5.31)  # GeV — my retune`, then:
+Edit the first line of `fit.py` to `signal_region = (5.25, 5.30)  # GeV — my retune`, then:
 
 ```bash
 git add fit.py
 git commit -m "Retune signal region"
 ```
 
-**2 · Meanwhile, a teammate's PR lands on `main`.** In real life they merged it on GitHub;
-to reproduce it here, switch to `main` and make their change directly:
+**2 · Meanwhile, a PR is merged into `main`** that touches the same line. To reproduce it,
+switch to `main` and make that change there:
 
 ```bash
 git switch main
 ```
 
-Edit the first line of `fit.py` to `signal_region = (5.18, 5.32)  # GeV — teammate's wider`,
-then:
+Edit the first line of `fit.py` to `signal_region = (5.18, 5.32)  # GeV — merged PR`, then:
 
 ```bash
 git add fit.py
-git commit -m "Widen signal region (teammate's PR)"
+git commit -m "Widen signal region (merged PR)"
 ```
 
-Now `main` and your branch have each changed the **same line** in different ways.
-
-**3 · Rebase your branch onto the updated `main`.** Hop back to your branch and replay your
-work on top of the latest `main`:
+**3 · Pull `main`'s changes into your branch with rebase.** Go back to your branch and replay
+your work on top of the updated `main`:
 
 ```bash
 git switch retune-region
 git rebase main
 ```
 
-Because both sides touched the same line, git can't decide for you — it pauses with a
-**conflict**:
+!!! tip "The remote one-liner"
+    Here `main` was already up to date locally. When the new commit is only on GitHub, this
+    same step is `git pull --rebase origin main` — fetch `main` **and** rebase your branch onto
+    it, in one command.
+
+Because you both changed the same line, git pauses with a conflict:
 
 ```title="output"
 Auto-merging fit.py
 CONFLICT (content): Merge conflict in fit.py
-error: could not apply f00ba17... Retune signal region
+error: could not apply e1f2a3b... Retune signal region
 ```
 
-Open `fit.py` — git inserted **conflict markers** showing both versions:
+Open `fit.py` — the same `<<< === >>>` markers you met in §5:
 
 ```python title="fit.py (with conflict markers)"
 <<<<<<< HEAD
-signal_region = (5.18, 5.32)  # GeV — teammate's wider
+signal_region = (5.18, 5.32)  # GeV — merged PR
 =======
-signal_region = (5.22, 5.31)  # GeV — my retune
+signal_region = (5.25, 5.30)  # GeV — my retune
 >>>>>>> Retune signal region
 ```
 
-- The part **above** `=======` (labelled `HEAD`) is what's already on `main` — your
-  teammate's line.
-- The part **below** `=======` is your commit being replayed — your line.
-
-**Resolve it:** decide the final line, **delete all three marker lines** (`<<<<<<<`,
-`=======`, `>>>>>>>`), and keep what you want. Say the team agrees on your retuned window:
+Pick the final line, **delete the three marker lines**, and save — say you keep your retune:
 
 ```python title="fit.py (resolved)"
-signal_region = (5.22, 5.31)  # GeV — agreed retuned window
+signal_region = (5.25, 5.30)  # GeV — retuned, on top of the merged PR
 ```
 
-Tell git the conflict is resolved, then continue the rebase:
+Now the **key difference from §5**: you finish a *rebase* conflict with `rebase --continue`,
+**not** a commit:
 
 ```bash
 git add fit.py
 git rebase --continue
 ```
 
-Run the script to confirm nothing broke:
+Confirm it runs, and you're up to date with `main`:
 
 ```bash
 python fit.py
 ```
 
-Your branch now sits cleanly on top of the latest `main`, conflict and all — from here you'd
-push it and open a PR just like in §4.
+From here you'd push your branch and open a PR — now built on top of the latest `main`.
 
-!!! tip "Escape hatch"
-    Made a mess mid-rebase? `git rebase --abort` puts everything back **exactly** as it was
-    before you started. Nothing is lost — try again with a clear head.
+!!! info "Merge conflict vs. rebase conflict — same markers, different ending"
+    The `<<< === >>>` markers are identical; only the **finish** differs:
 
-!!! tip "Related: `git pull --rebase`"
-    When you're on a **shared branch** (like `main`) and both you and a teammate have pushed
-    commits, `git pull --rebase` fetches theirs and replays yours on top — the same idea,
-    without a messy merge commit. It's the everyday cousin of what you just did.
+    - After a **merge** conflict (§5): `git add` → **`git commit`** (creates a merge commit).
+    - After a **rebase** conflict (§6): `git add` → **`git rebase --continue`** (no merge
+      commit — your commit is replayed on top of `main`).
 
-!!! info "`merge` vs. `rebase` — the one-line version"
-    Both combine branches. **`git merge`** joins them with a new "merge commit" (preserves
-    the exact history). **`git rebase`** replays your commits *on top of* the latest `main`,
-    giving a clean, straight-line history. Golden rule: **rebase your own work that you
-    haven't pushed yet; don't rebase commits others have already pulled.**
+    Stuck either way? **`git merge --abort`** / **`git rebase --abort`** returns you to safety.
+    Golden rule: rebase your own un-pushed work; don't rebase commits others have already
+    pulled.
 
 ---
 
@@ -420,7 +516,8 @@ push it and open a PR just like in §4.
 - [x] You can push and pull (token-cached over HTTPS, or passwordless over SSH)
 - [x] You know the team workflow: **clone → pull → commit → push**
 - [x] You opened and merged a **Pull Request**
-- [x] You resolved a **merge conflict** and know `rebase` vs `merge`
+- [x] You resolved a **merge conflict** by choosing the better change (finish: `commit`)
+- [x] You **rebased** your branch onto `main`'s new work (finish: `rebase --continue`)
 
 </div>
 
