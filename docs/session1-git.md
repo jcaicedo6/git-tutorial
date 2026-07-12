@@ -425,6 +425,19 @@ Create a branch called `try-tighter-cut` and switch to it in one step:
 git switch -c try-tighter-cut
 ```
 
+!!! note "Another way: `git branch` + `git checkout`"
+    `git switch -c` does two things at once — **create** the branch and **switch** onto it.
+    You can also do them as two separate steps with the older commands:
+
+    ```bash
+    git branch try-tighter-cut      # create the branch (you stay on main)
+    git checkout try-tighter-cut    # switch onto it
+    ```
+
+    `git switch` was added in git 2.23 to make this clearer, but `git checkout` still works
+    everywhere and you'll meet it in lots of tutorials. (`git checkout -b try-tighter-cut` is
+    its one-step form.) We use `git switch` throughout this tutorial.
+
 Now improve `fit.py` on this branch. **Edit the file, keeping it whole** — don't overwrite
 it with a single `echo`, or you'll delete the `print` line and the script won't do its job!
 Open it in your editor and make it read:

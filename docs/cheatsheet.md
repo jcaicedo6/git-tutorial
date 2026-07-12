@@ -74,6 +74,14 @@ git branch -d my-idea             # delete a merged branch
 git merge my-idea                 # bring my-idea's work into current branch (solo)
 ```
 
+Older equivalents you'll see elsewhere (`checkout` predates `switch`):
+
+```bash
+git branch my-idea                # create only (stay put), then...
+git checkout my-idea              # ...switch onto it
+git checkout -b my-idea           # create + switch, in one step
+```
+
 ## Pull Requests (the team way to merge)
 
 ```bash
