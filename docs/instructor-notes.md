@@ -8,12 +8,13 @@ Setup before starting Session 1 — a half-configured room stalls the whole grou
 ## Learning objectives
 
 By the end students can, on their own laptops:
-1. Install git and connect their laptop to GitHub with an SSH key.
+1. Install git and connect their laptop to GitHub (HTTPS or SSH).
 2. Explain *why* version control matters for a shared analysis.
 3. Run the core loop: `init → add → commit`, and inspect with `status / log / diff`.
 4. Undo uncommitted mistakes and keep large data out with `.gitignore`.
-5. Push a local repo to GitHub over SSH.
-6. Describe the team loop: `clone → pull → commit → push`.
+5. Branch, test their code, and merge it back into `main`.
+6. Push a local repo to GitHub and run the team loop: `clone → pull → commit → push`.
+7. Open and merge a **Pull Request**, and resolve a **merge conflict** with `rebase`.
 
 ## Timing
 
@@ -31,25 +32,35 @@ By the end students can, on their own laptops:
 > fiddlier (Windows agent, macOS Keychain). Have 1–2 floating helpers. Whichever they pick,
 > the real test is the first `push` in Session 2 — don't linger here waiting for perfection.
 
-### Session 1 — Git (~30 min)
+### Session 1 — Git (~35 min)
 | Min | Section |
 |-----|---------|
 | 0–2 | §0 Why git (talk over the mental-model diagram) |
 | 2–3 | §1 Confirm setup (`git config --global --list`) |
 | 3–6 | §2 `git init` |
-| 6–12 | §3 First commit — **the key moment; make sure everyone gets Checkpoint 1** |
-| 12–17 | §4 Change + diff + second commit (Checkpoint 2) |
-| 17–21 | §5 Undo with `restore` |
-| 21–25 | §6 `.gitignore` (Checkpoint 3) — stress the "no big ROOT files" point |
-| 25–30 | §7 Branches **only if the room is keeping up**; otherwise skip & use as buffer |
+| 6–11 | §3 First commit — **the key moment; make sure everyone gets Checkpoint 1** |
+| 11–15 | §4 Change + diff + second commit (Checkpoint 2) |
+| 15–18 | §5 Undo with `restore` |
+| 18–22 | §6 `.gitignore` (Checkpoint 3) — stress the "no big ROOT files" point |
+| 22–30 | §7 Branch → **edit `fit.py` in an editor, RUN it**, commit (Checkpoint 4 prep) |
+| 30–35 | §8 Merge branch into `main`, delete branch, tease PRs (Checkpoint 4) |
 
-### Session 2 — GitHub (~15 min)
+> §7–§8 are now core, not stretch: they close the **branch → edit → test → commit → merge**
+> loop. Hammer the "**edit the file, don't `echo`-clobber it; then run it before you
+> commit**" point — it's the habit that keeps a team's analysis working.
+
+### Session 2 — GitHub (~15 min core + ~10 min deep-dive)
 | Min | Section |
 |-----|---------|
-| 0–4 | §1 Create empty repo (watch the "don't add README" trap; grab the **SSH** URL) |
-| 4–9 | §2 `remote add` + `push` over SSH — the payoff moment |
+| 0–4 | §1 Create empty repo (watch the "don't add README" trap; grab the matching URL) |
+| 4–9 | §2 `remote add` + `push` — the payoff moment |
 | 9–13 | §3 Team loop (discuss, don't type) |
-| 13–15 | Buffer / questions |
+| — | **Collaboration deep-dive (do live, or when teams first need it):** |
+| 13–20 | §4 Pull Requests — push a branch, open a PR, review, merge on GitHub |
+| 20–25 | §5 Conflict on purpose → resolve → `git rebase --continue`; merge vs rebase |
+
+> §4–§5 push Session 2 past 15 min. If time is tight, **demo them on the projector** and
+> point teams back to the page when they hit their first real PR or conflict.
 
 ## Pre-session setup check (do this before students arrive)
 
@@ -87,6 +98,10 @@ git config --global init.defaultBranch main
 | Committed a huge `.root` file | No `.gitignore` yet | Teach `.gitignore` early; for removal use `git rm --cached file` |
 | `src refspec main does not match` | No commits yet | Make a commit before pushing |
 | Student on `master` not `main` | Old git default | `git branch -m master main` |
+| `python: command not found` running `fit.py` | Only `python3` installed | Use `python3 fit.py` |
+| Stuck mid-rebase, panicking | Conflict during `git rebase` | Edit file → remove `<<< === >>>` markers → `git add` → `git rebase --continue`; or bail with `git rebase --abort` |
+| `git branch -d` refuses to delete | Branch not fully merged | Confirm it's really unwanted, then `git branch -D` (capital = force) |
+| Conflict markers committed into a file | Resolved sloppily | Search the repo for `<<<<<<<`; re-edit and recommit |
 
 ## Teaching tips
 
@@ -96,8 +111,11 @@ git config --global init.defaultBranch main
 - Keep repeating **`git status` is your friend** — it defuses most confusion.
 - Tie every concept to the workshop: "the cut that defines your signal region is exactly
   the kind of thing you'll commit and your teammate will review with `git diff`."
-- Don't teach merge conflicts today. Mention they exist; promise a walkthrough when a
-  team hits their first real one.
+- **The conflict demo (Session 2 §5) is the scariest moment for beginners.** Do it slowly on
+  the projector first, narrate the `<<<<<<<`/`>>>>>>>` markers as "git showing you both
+  versions, pick one", and show `git rebase --abort` early so nobody feels trapped.
+- Reassure them a conflict is **not** an error or a lost-work situation — it's git asking a
+  question. `git status` during a conflict literally tells you the next step.
 
 ## Optional: prepare a team repo template
 
@@ -109,6 +127,7 @@ sections (Decay, MC, Signal region, Fit, Branching ratio, Poster), and empty `mc
 
 ## What this tutorial deliberately skips (mention, don't teach)
 
-Merge conflict resolution, rebasing, pull requests, stashing, tags, submodules. These
-come up naturally later; introduce them just-in-time when a team needs them so they land
-with real motivation.
+Interactive rebase (`rebase -i`), stashing, tags, submodules, cherry-picking, and
+force-pushing. Branches, merges, pull requests, and *basic* conflict resolution with
+`rebase` are now covered (Session 1 §7–§8, Session 2 §4–§5). Introduce the rest
+just-in-time when a team actually needs them, so they land with real motivation.

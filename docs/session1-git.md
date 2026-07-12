@@ -404,36 +404,12 @@ git commit -m "Ignore ROOT files, logs, and Python cache"
 
 ---
 
-## 7. Stretch goal — branches
+## 7. Branches: experiment without breaking `main`
 
-A **branch** is a parallel line of work. You'll use these constantly with your team: try
-a new cut on a branch without touching everyone's working `main`.
+A **branch** is a parallel line of work. You'll use these constantly with your team: try a
+new cut on a branch while everyone else's `main` stays safe and working.
 
-Now, let's check the current branches you actually havee
-```bash
-git branch    # list the branch of the local repository
-```
-
-```title="output"
-* main
-```
-
-```bash
-git switch -c try-tighter-cut     # create and move to a new branch
-echo "signal_region = (5.24, 5.29)  # tighter" > fit.py
-git add fit.py
-git commit -m "Try a tighter signal region"
-```
-
-Now hop back to `main` and see `fit.py` is unchanged there:
-
-```bash
-git switch main
-cat fit.py        # the original wide cut — untouched
-```
-
-Your experiment lives safely on its own branch. List your branches (`*` marks where
-you are):
+First, list the branches you have right now (`*` marks where you are):
 
 ```bash
 git branch
@@ -441,11 +417,104 @@ git branch
 
 ```title="output"
 * main
-  try-tighter-cut
 ```
 
-If you like the change you'll *merge* it later (we'll practice merging when we collaborate
-on GitHub). If not, just delete the branch — no harm done.
+Create a branch called `try-tighter-cut` and switch to it in one step:
+
+```bash
+git switch -c try-tighter-cut
+```
+
+Now improve `fit.py` on this branch. **Edit the file, keeping it whole** — don't overwrite
+it with a single `echo`, or you'll delete the `print` line and the script won't do its job!
+Open it in your editor and make it read:
+
+```python title="fit.py"
+signal_region = (5.24, 5.29)  # GeV — tighter window
+width = signal_region[1] - signal_region[0]
+print(f"fitting signal region {signal_region}, width = {width:.2f} GeV")
+```
+
+**Test it before you commit** — always run your code to check it actually works:
+
+```bash
+python fit.py      # try python3 on macOS/Linux if python isn't found
+```
+
+```title="output"
+fitting signal region (5.24, 5.29), width = 0.05 GeV
+```
+
+It runs. :tada: Now commit the working change:
+
+```bash
+git add fit.py
+git commit -m "Tighten signal region to 5.24-5.29 GeV"
+```
+
+!!! tip "Test, then commit"
+    Committing code you haven't run is how a broken analysis spreads to the whole team. Run
+    it first; commit once it works.
+
+Hop back to `main` and confirm your change is **not** there — the branch kept it isolated:
+
+```bash
+git switch main
+python fit.py
+```
+
+```title="output"
+fitting signal region (5.2, 5.3)
+```
+
+`main` still runs the original wide cut. Your experiment lived safely on its own branch.
+
+---
+
+## 8. Merge your work back into `main`
+
+You tested the tighter cut and you're happy with it — time to bring it into `main`. You
+merge *into* the branch you're currently on, so make sure you're on `main` first, then
+merge the feature branch in:
+
+```bash
+git switch main               # you should already be here
+git merge try-tighter-cut
+```
+
+```title="output"
+Updating a1b2c3d..f7e8d9c
+Fast-forward
+ fit.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+```
+
+Run it once more — `main` now has the tighter cut:
+
+```bash
+python fit.py
+```
+
+```title="output"
+fitting signal region (5.24, 5.29), width = 0.05 GeV
+```
+
+The branch has done its job, so delete it to keep things tidy:
+
+```bash
+git branch -d try-tighter-cut     # -d only deletes fully-merged branches — a safety net
+```
+
+!!! success "✅ Checkpoint 4"
+    `git log --oneline` shows your "Tighten signal region…" commit on `main`, and
+    `python fit.py` prints the tighter window. You just completed the full branch workflow:
+    **branch → edit → test → commit → merge**.
+
+!!! quote "On a team, you don't merge into `main` yourself"
+    Merging straight into `main` is fine when you work alone. On a team you instead push your
+    branch to GitHub and open a **Pull Request** so teammates can review your change *before*
+    it lands. That's exactly what
+    [Session 2](session2-github.md#4-pull-requests-the-team-way-to-merge) covers next.
 
 ---
 
@@ -457,11 +526,11 @@ on GitHub). If not, just delete the branch — no harm done.
 - [x] Save snapshots (`add` → `commit`) and inspect history (`status`, `log`, `diff`)
 - [x] Undo mistakes (`restore`)
 - [x] Keep big files out (`.gitignore`)
-- [x] *(Stretch)* Work in parallel with branches
+- [x] Branch, test, and merge your work (`switch`, `merge`)
 
 </div>
 
-**These five things cover 90% of daily git.**
+**These cover 90% of daily git.**
 
 [:octicons-arrow-right-24: Next: put this repo on GitHub](session2-github.md){ .md-button .md-button--primary }
 [Open the cheat sheet](cheatsheet.md){ .md-button }

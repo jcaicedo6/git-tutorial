@@ -1,11 +1,13 @@
 # Session 2 · Put Your Repo on GitHub
 
 !!! abstract "Goal"
-    Take the repo you built in Session 1, put it online on GitHub, and learn the loop your
-    team will use every day: `clone → pull → commit → push`.
+    Take the repo you built in Session 1, put it online on GitHub, learn the everyday loop
+    (`clone → pull → commit → push`), and finish with the real team workflow: **Pull
+    Requests** and resolving a **merge conflict** with `rebase`.
 
-    :octicons-clock-16: ~15 min &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo
-    from Session 1, plus everything from [Setup](setup.md) (account + a connection method)
+    :octicons-clock-16: ~15 min core (+~10 min for the collaboration deep-dive, §4–§5)
+    &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo from Session 1, plus
+    everything from [Setup](setup.md) (account + a connection method)
 
 !!! info "Git vs. GitHub"
     **git** is the tool on your laptop (Session 1). **GitHub** is a website that hosts git
@@ -134,11 +136,11 @@ and the full commit history you built in Session 1. :tada:
 Once a repo is on GitHub, this is the rhythm you'll repeat all workshop:
 
 ```bash
-git pull                 # (1)! get teammates' latest work FIRST
+git pull                 # 1) get teammates' latest work FIRST
 # ... edit files, run analysis ...
 git add .
 git commit -m "Add Kπ invariant-mass plot"
-git push                 # (2)! share your work
+git push                 # 2) share your work
 ```
 
 1.  **Pull before you start.** This is how you get everyone else's changes and avoid
@@ -178,6 +180,154 @@ team's project. From then on it's just the pull → edit → commit → push loo
 
 ---
 
+## 4. Pull Requests — the team way to merge
+
+In [Session 1 §8](session1-git.md#8-merge-your-work-back-into-main) you merged a branch into
+`main` yourself. On a team you **don't** do that. Instead you open a **Pull Request (PR)**:
+you push your branch to GitHub and *ask* for it to be merged, so teammates can review the
+diff, comment, and approve first. Let's do one.
+
+Create a feature branch, make a small change, and commit it:
+
+```bash
+git switch -c add-mass-plot
+echo "Next step: add the invariant-mass plot" >> README.md
+git add README.md
+git commit -m "Note plan to add the mass plot"
+```
+
+Push **the branch** (not `main`) up to GitHub:
+
+```bash
+git push -u origin add-mass-plot
+```
+
+```title="output"
+...
+remote: Create a pull request for 'add-mass-plot' on GitHub by visiting:
+remote:   https://github.com/your-username/my_decay_analysis/pull/new/add-mass-plot
+```
+
+Now open the PR on GitHub:
+
+1. Open your repo — GitHub shows a green **"Compare & pull request"** banner. Click it.
+   (Or use the **Pull requests** tab → **New pull request**.)
+2. Check the direction: **base: `main`** ← **compare: `add-mass-plot`**. Scroll the diff —
+   this is exactly what your teammates will review.
+3. Write a clear **title** and a short description of *what* changed and *why*. Click
+   **Create pull request**.
+4. A teammate reviews, leaves comments, and clicks **Approve**. *(Working solo? Review your
+   own PR for practice.)*
+5. Click **Merge pull request** → **Confirm merge**. Then **Delete branch** on GitHub — it's
+   served its purpose.
+
+!!! info "What a Pull Request actually is"
+    A PR is a *request to merge one branch into another*, wrapped in a page for **review and
+    discussion**. It shows the diff, lets teammates comment line-by-line, runs any automated
+    checks (tests / CI), and records who approved — all *before* the change touches `main`.
+    It's how real teams keep `main` always working.
+
+Back on your laptop, sync the merged result and clean up your local branch:
+
+```bash
+git switch main
+git pull                      # brings the merged PR into your local main
+git branch -d add-mass-plot
+```
+
+---
+
+## 5. When git can't auto-merge: conflicts & `rebase`
+
+Sometimes two people change the **same lines** of the same file. Git can't guess who's
+right, so it stops and asks you — that's a **merge conflict**. Let's create one on purpose
+(playing both people) and resolve it.
+
+**Set the stage** — first, a teammate widens the region on `main` and commits it:
+
+```bash
+git switch main
+```
+
+Edit the first line of `fit.py` to read `signal_region = (5.18, 5.32)  # GeV — wider`
+(leave the other lines), then commit:
+
+```bash
+git commit -am "Widen signal region on main"
+```
+
+Now **you** start a branch from *before* that change and edit the **same line** differently:
+
+```bash
+git switch -c retune-region main~1     # branch off the commit BEFORE the widen
+```
+
+Edit the first line of `fit.py` to `signal_region = (5.24, 5.29)  # GeV — tighter`, then:
+
+```bash
+git commit -am "Retune signal region tighter"
+```
+
+Your branch and `main` have now edited the same line from a common starting point. Replay
+your branch **on top of** the latest `main` with `rebase`:
+
+```bash
+git rebase main
+```
+
+```title="output"
+Auto-merging fit.py
+CONFLICT (content): Merge conflict in fit.py
+error: could not apply f00ba17... Retune signal region tighter
+```
+
+Open `fit.py` — git inserted **conflict markers** showing both versions:
+
+```python title="fit.py (with conflict markers)"
+<<<<<<< HEAD
+signal_region = (5.18, 5.32)  # GeV — wider
+=======
+signal_region = (5.24, 5.29)  # GeV — tighter
+>>>>>>> Retune signal region tighter
+```
+
+- The part **above** `=======` (labelled `HEAD`) is what's already on `main` — your
+  teammate's "wider" line.
+- The part **below** `=======` is the commit being replayed — your "tighter" line.
+
+**Resolve it:** decide the final line, **delete all three marker lines** (`<<<<<<<`,
+`=======`, `>>>>>>>`), and keep what you want. Say you agree on the tighter window:
+
+```python title="fit.py (resolved)"
+signal_region = (5.24, 5.29)  # GeV — agreed tighter window
+```
+
+Tell git the conflict is resolved, then continue the rebase:
+
+```bash
+git add fit.py
+git rebase --continue
+```
+
+Test that everything still works, and you're done:
+
+```bash
+python fit.py
+```
+
+!!! tip "Escape hatch"
+    Made a mess mid-rebase? `git rebase --abort` puts everything back **exactly** as it was
+    before you started. Nothing is lost — try again with a clear head.
+
+!!! info "`merge` vs. `rebase` — the one-line version"
+    Both combine branches. **`git merge`** joins them with a new "merge commit" (preserves
+    the exact history). **`git rebase`** replays your commits *on top of* the latest `main`,
+    giving a clean, straight-line history — which is why teams often run **`git pull
+    --rebase`** to fold in teammates' work tidily. Golden rule: **rebase your own work that
+    you haven't pushed yet; don't rebase commits others have already pulled.**
+
+---
+
 ## You're done :white_check_mark:
 
 <div class="checklist" markdown>
@@ -185,6 +335,8 @@ team's project. From then on it's just the pull → edit → commit → push loo
 - [x] Your Session 1 repo is live on GitHub
 - [x] You can push and pull (token-cached over HTTPS, or passwordless over SSH)
 - [x] You know the team workflow: **clone → pull → commit → push**
+- [x] You opened and merged a **Pull Request**
+- [x] You resolved a **merge conflict** and know `rebase` vs `merge`
 
 </div>
 

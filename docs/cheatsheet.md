@@ -65,8 +65,36 @@ git commit --amend -m "New msg"   # fix the last commit message
 git switch -c my-idea             # create + switch to a branch
 git switch main                   # go back to main
 git branch                        # list branches
-git merge my-idea                 # bring my-idea's work into current branch
+git branch -d my-idea             # delete a merged branch
+git merge my-idea                 # bring my-idea's work into current branch (solo)
 ```
+
+## Pull Requests (the team way to merge)
+
+```bash
+git switch -c my-idea             # work on a branch
+# ...edit, commit...
+git push -u origin my-idea        # push the BRANCH, then open a PR on GitHub
+# teammates review → Merge on GitHub → then locally:
+git switch main && git pull       # get the merged result
+git branch -d my-idea             # clean up
+```
+
+## Merge conflicts & rebase
+
+```bash
+git pull --rebase                 # fold in teammates' work with a clean history
+git rebase main                   # replay your branch on top of latest main
+# conflict? edit the file, delete the <<<<<<< ======= >>>>>>> markers, then:
+git add <file>
+git rebase --continue
+git rebase --abort                # panic button: undo the whole rebase
+```
+
+!!! quote "merge vs rebase"
+    **merge** = join branches with a merge commit (keeps exact history). **rebase** = replay
+    your commits on top of `main` (clean, straight-line history). Rebase only your own
+    un-pushed work; never rebase commits others already pulled.
 
 ## Connect to GitHub
 
