@@ -25,11 +25,11 @@
 
 ## 1. Create an empty repository on GitHub
 
-1. Click the **+** (top-right) → **New repository**.
-2. **Repository name:** `my_decay_analysis` (matching your folder is tidy, not required).
-3. **Description:** e.g. "Workshop practice analysis repo".
-4. **Public** or **Private** — either is fine for practice. Your *team* repo will
-   probably be private.
+1. Go to you [github.com](https://github.com/) and Sign in.
+2. Click the **+** (top-left) → **New** (New repository).
+3. **Repository name:** `my_decay_analysis` (matching your folder is tidy, not required).
+4. **Description:** e.g. "Workshop practice analysis repo".
+5. **Public** or **Private** — either is fine for practice. 
 
 !!! warning "Leave the checkboxes UNCHECKED"
     Do **not** tick "Add a README", ".gitignore", or "license". You already have files
