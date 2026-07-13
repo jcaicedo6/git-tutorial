@@ -509,7 +509,7 @@ Open `fit.py` — the same `<<< === >>>` markers you met in §5:
 signal_region = (5.18, 5.32)  # GeV — merged PR
 =======
 signal_region = (5.25, 5.30)  # GeV — my retune
->>>>>>> Retune signal region
+>>>>>>> e1f2a3b (Retune signal region)
 ```
 
 Pick the final line, **delete the three marker lines**, and save — say you keep your retune:
