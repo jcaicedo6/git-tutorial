@@ -89,3 +89,10 @@ GitHub are the tools that let several people work on the same analysis without e
 New to all of this? Start with [**Setup · Get Ready**](setup.md) — it walks you through
 installing git, creating a GitHub account, and connecting to GitHub on **Windows, macOS, or
 Linux**. Once everyone is set up, move on to [**Session 1**](session1-git.md). :rocket:
+
+---
+
+Find this tutorial helpful? A star or a follow helps others discover it :material-heart-outline:
+
+[:material-star: Star the repo](https://github.com/jcaicedo6/git-tutorial){ .md-button .md-button--primary }
+[:material-github: Follow @jcaicedo6](https://github.com/jcaicedo6){ .md-button }
