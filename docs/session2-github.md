@@ -3,7 +3,8 @@
 !!! abstract "Goal"
     Take the repo you built in Session 1, put it online on GitHub, learn the everyday loop
     (`clone → pull → commit → push`), and finish with the real team workflow: **Pull
-    Requests**, resolving a **merge conflict**, and **rebasing** onto the latest `main`.
+    Requests**, resolving a **merge conflict**, and syncing with `main` via **`git pull`**
+    (fetch + merge).
 
     :octicons-clock-16: ~15 min core (+~15 min for the collaboration deep-dive, §4–§6)
     &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo from Session 1, plus
@@ -436,30 +437,34 @@ git branch -d wide tight
 
 ---
 
-## 6. Rebase: pull `main`'s new work into your branch
+## 6. Sync your branch with `main` using `git pull`
 
-The most common real situation: you're partway through a feature on your own branch, when a
-teammate's PR gets **merged into `main`** — touching a line you're also editing. You want
-`main`'s new work **underneath yours** before you carry on. You bring it in with **rebase** —
-and because you both changed the same line, you'll resolve a conflict that ends *differently*
-from the merge in §5.
+Here's the situation on every team. You branch off `main` and start a feature. While you work,
+teammates keep merging their PRs, so **`main` moves ahead of where you started**. Before you go
+further, you pull `main`'s new work into your branch, so you're building on current code — not
+yesterday's. The everyday command for that is **`git pull`**.
 
-!!! info "What is `rebase`, in one picture?"
-    Your branch is a couple of commits stacked on top of `main`. When `main` gets new commits,
-    your stack is still based on the *old* `main`. **`git rebase main` lifts your commits off
-    and re-plays them on top of the *latest* `main`** — as if you'd started your branch today.
-    You get a clean, straight history instead of a tangle.
+!!! info "What `git pull` actually does: **fetch + merge**"
+    You've already run `git pull` (in §2–§3) without us unpacking it. Here it is:
 
-    ```
-    Before rebase                        After  git rebase main
+    **`git pull` = `git fetch` + `git merge`.**
 
-    A───B───C  (main, +merged commit C)  A───B───C  (main)
-         \                                        \
-          X  (your branch, based on               X'  (your commit, replayed
-              the old main at B)                       on top of the new main)
-    ```
+    - **`git fetch`** downloads the new commits from GitHub into your local repo — your working
+      files don't change yet.
+    - **`git merge`** then combines those downloaded commits into the branch you're on.
 
-**1 · Start your branch and change a line.** You begin retuning the region:
+    So `git pull` is simply "**download, then merge**," in one command. And because the second
+    half is a *merge*, a `pull` can raise the **same kind of conflict** you resolved in §5 —
+    which is exactly what we'll make happen here.
+
+!!! warning "Conflicts come from *combining* branches — never from `commit`"
+    A plain `git commit` **cannot** produce a conflict — it only saves your own work. Conflicts
+    appear during `merge` / `pull` / `rebase`, the moment two histories are joined. In this
+    section the conflict shows up at the **pull** step — *not* when you commit your own change.
+
+Let's walk the real flow. (You'll play the teammate too, so you can reproduce it solo.)
+
+**1 · You do some work on your branch.** Branch off `main` and retune the region:
 
 ```bash
 git switch main
@@ -473,8 +478,8 @@ git add fit.py
 git commit -m "Retune signal region"
 ```
 
-**2 · Meanwhile, a PR is merged into `main`** that touches the same line. To reproduce it,
-switch to `main` and make that change there:
+**2 · Meanwhile, `main` moves on.** A teammate's PR is merged into `main`, touching the same
+line. To reproduce that on your laptop, make the change on `main` directly:
 
 ```bash
 git switch main
@@ -487,69 +492,83 @@ git add fit.py
 git commit -m "Widen signal region (merged PR)"
 ```
 
-**3 · Pull `main`'s changes into your branch with rebase.** Go back to your branch and replay
-your work on top of the updated `main`:
+**3 · Pull `main`'s changes into your branch.** Switch back to your branch and bring `main` in:
 
 ```bash
 git switch retune
-git rebase main
+git merge main
 ```
 
-!!! tip "The remote one-liner"
-    Here `main` was already up to date locally. When the new commit is only on GitHub, this
-    same step is `git pull --rebase origin main` — fetch `main` **and** rebase your branch onto
-    it, in one command.
+!!! note "Why `git merge main` here, and `git pull` in real life"
+    On a real team the teammate's commit lives on **GitHub**, so you'd run **`git pull origin
+    main`** — which *fetches* it and *merges* it into your branch in one step. In this solo demo
+    you made the change on your own `main`, so it's already on your laptop — nothing to fetch —
+    and we run just the **merge** half, `git merge main`. Same combine, same conflict.
 
-Because you both changed the same line, git pauses with a conflict:
+Because your retune and the teammate's change hit the **same line**, the merge can't proceed on
+its own — git stops and hands the decision to you:
 
 ```title="output"
 Auto-merging fit.py
 CONFLICT (content): Merge conflict in fit.py
-error: could not apply e1f2a3b... Retune signal region
+Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-Open `fit.py` — the same `<<< === >>>` markers you met in §5:
+*(Had you touched different lines, there'd be no conflict — the merge would just finish.)*
+
+Open `fit.py` — the same `<<< === >>>` markers from §5:
 
 ```python title="fit.py (with conflict markers)"
 <<<<<<< HEAD
-signal_region = (5.18, 5.32)  # GeV — merged PR
-=======
 signal_region = (5.25, 5.30)  # GeV — my retune
->>>>>>> e1f2a3b (Retune signal region)
+=======
+signal_region = (5.18, 5.32)  # GeV — merged PR
+>>>>>>> main
 ```
 
-Pick the final line, **delete the three marker lines**, and save — say you keep your retune:
+- Above `=======` (`HEAD`) is **your branch** — your retune.
+- Below is **`main`** — the merged PR.
+
+Pick the final line, **delete the three marker lines**, and save — say you keep your retune, now
+sitting on top of the merged change:
 
 ```python title="fit.py (resolved)"
 signal_region = (5.25, 5.30)  # GeV — retuned, on top of the merged PR
 ```
 
-Now the **key difference from §5**: you finish a *rebase* conflict with `rebase --continue`,
-**not** a commit:
+Stage and commit to finish the merge — exactly like §5:
 
 ```bash
 git add fit.py
-git rebase --continue
+git commit -m "Merge main into retune; keep my retune"
 ```
 
-Confirm it runs, and you're up to date with `main`:
+Confirm it runs — your branch now has `main`'s work **and** your retune:
 
 ```bash
 python fit.py
 ```
 
-From here you'd push your branch and open a PR — now built on top of the latest `main`.
+Keep building your feature on the latest code; later you'll push the branch and open a PR.
 
-!!! info "Merge conflict vs. rebase conflict — same markers, different ending"
-    The `<<< === >>>` markers are identical; only the **finish** differs:
+!!! tip "Cleaner history: `git pull --rebase` (fetch + **rebase**)"
+    Every `git pull` that has to combine work leaves a **merge commit** behind; over a long
+    branch these pile up and clutter the history. Many teams prefer **`git pull --rebase`**
+    (= `git fetch` + `git rebase`), which *replays* your commits on top of the fetched `main`
+    for a straight, linear history:
 
-    - After a **merge** conflict (§5): `git add` → **`git commit`** (creates a merge commit).
-    - After a **rebase** conflict (§6): `git add` → **`git rebase --continue`** (no merge
-      commit — your commit is replayed on top of `main`).
+    ```
+    Before rebase                        After  git pull --rebase
 
-    Stuck either way? **`git merge --abort`** / **`git rebase --abort`** returns you to safety.
-    Golden rule: rebase your own un-pushed work; don't rebase commits others have already
-    pulled.
+    A───B───C  (main, +merged commit C)  A───B───C  (main)
+         \                                        \
+          X  (your commit, based on               X'  (your commit, replayed
+              the old main at B)                       on top of the new main)
+    ```
+
+    Same markers if it conflicts, but you **finish differently**: `git add` then **`git rebase
+    --continue`** (no merge commit). Stuck mid-combine either way? `git merge --abort` /
+    `git rebase --abort` resets you. Golden rule: only rebase your **own, un-pushed** commits.
 
 ---
 
@@ -561,8 +580,9 @@ From here you'd push your branch and open a PR — now built on top of the lates
 - [x] You can push and pull (token-cached over HTTPS, or passwordless over SSH)
 - [x] You know the team workflow: **clone → pull → commit → push**
 - [x] You opened and merged a **Pull Request**
-- [x] You resolved a **merge conflict** by choosing the better change (finish: `commit`)
-- [x] You **rebased** your branch onto `main`'s new work (finish: `rebase --continue`)
+- [x] You resolved a **merge conflict** by choosing the better change
+- [x] You synced your branch with `main` using **`git pull`** (= fetch + merge), and know
+      `--rebase` as the tidy alternative
 
 </div>
 

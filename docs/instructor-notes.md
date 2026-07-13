@@ -14,8 +14,8 @@ By the end students can, on their own laptops:
 4. Undo uncommitted mistakes and keep large data out with `.gitignore`.
 5. Branch, test their code, and merge it back into `main`.
 6. Push a local repo to GitHub and run the team loop: `clone → pull → commit → push`.
-7. Open and merge a **Pull Request**, resolve a **merge conflict** by choosing the better
-   change, and **rebase** a feature branch onto the latest `main`.
+7. Open and merge a **Pull Request**, resolve a **merge conflict**, and sync a branch with
+   `main` using `git pull` (understanding it as `fetch` + `merge`).
 
 ## Timing
 
@@ -59,13 +59,13 @@ By the end students can, on their own laptops:
 | — | **Collaboration deep-dive (do live, or when teams first need it):** |
 | 13–19 | §4 Pull Requests — push a branch, open a PR, review, merge on GitHub |
 | 19–25 | §5 Merge conflict — two branches, same line; resolve → finish with `commit` |
-| 25–31 | §6 Rebase — pull `main`'s change into your branch → conflict → `rebase --continue` |
+| 25–31 | §6 `git pull` = fetch + merge; sync a branch with `main`, hit + resolve a conflict |
 
 > §4–§6 push Session 2 past 15 min. If time is tight, **demo them on the projector** and
-> point teams back to the page when they hit their first real PR, conflict, or rebase.
-> The payoff is the **contrast**: §5 and §6 have the *same* conflict markers but finish
-> differently — a **merge** conflict ends in `git commit`, a **rebase** conflict ends in
-> `git rebase --continue`. Make sure that lands.
+> point teams back to the page when they hit their first real PR, conflict, or sync.
+> Two things to make land in §6: (1) **`git pull` = `git fetch` + `git merge`** — that's why a
+> pull can conflict; (2) **a plain `git commit` never conflicts** — conflicts only happen when
+> branches are *combined*. `git pull --rebase` is introduced only as the tidy-history variant.
 
 ## Pre-session setup check (do this before students arrive)
 
