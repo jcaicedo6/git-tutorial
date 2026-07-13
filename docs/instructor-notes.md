@@ -107,6 +107,7 @@ git config --global init.defaultBranch main
 | Stuck mid-rebase, panicking | Conflict during `git rebase` | Edit file → remove `<<< === >>>` markers → `git add` → `git rebase --continue`; or bail with `git rebase --abort` |
 | `git branch -d` refuses to delete | Branch not fully merged | Confirm it's really unwanted, then `git branch -D` (capital = force) |
 | Conflict markers committed into a file | Resolved sloppily | Search the repo for `<<<<<<<`; re-edit and recommit |
+| `fatal: cannot do a partial commit during a merge` | Ran `git commit "msg"` **without `-m`** — git treats `"msg"` as a filename | Use `git commit -m "msg"` (or bare `git commit`) |
 
 ## Teaching tips
 

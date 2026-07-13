@@ -415,7 +415,13 @@ python fit.py
 git branch -d wide tight
 ```
 
-??? failure "Stuck? The two errors people hit here"
+??? failure "Stuck? Common errors people hit here"
+    **`fatal: cannot do a partial commit during a merge`** — you ran `git commit` **without
+    `-m`**, e.g. `git commit "my message"`. Without the flag, git reads `"my message"` as a
+    *filename* to commit, and committing a single file mid-merge isn't allowed. Add the flag:
+    `git commit -m "my message"` (or run a bare `git commit`, which opens an editor with a
+    ready-made merge message).
+
     **`merge: tight - not something we can merge`** — git can't find a branch with that name,
     almost always a **typo** (e.g. `tigthten`). Run `git branch` to see the real names and
     merge the one that's actually listed.
