@@ -530,5 +530,10 @@ Happy hacking! :test_tube:
 
 ---
 
-<small>:material-star-outline: Found this useful? You can [star the repo](https://github.com/jcaicedo6/git-tutorial)
-or [follow me on GitHub](https://github.com/jcaicedo6) — totally optional, and good `git` practice. :material-github:</small>
+## :material-star: Enjoyed this tutorial?
+
+If it helped you, **starring the repo** and **following on GitHub** genuinely help others find
+it — and it's a nice bit of real `git`/GitHub practice, too. :rocket:
+
+[:material-star: Star the repo](https://github.com/jcaicedo6/git-tutorial){ .md-button .md-button--primary }
+[:material-github: Follow @jcaicedo6](https://github.com/jcaicedo6){ .md-button }
