@@ -549,7 +549,29 @@ Confirm it runs — your branch now has `main`'s work **and** your retune:
 python fit.py
 ```
 
-Keep building your feature on the latest code; later you'll push the branch and open a PR.
+**4 · Push your branch to GitHub.** So far this work only exists on your laptop. Publish the
+`retune` branch so it lands on the remote:
+
+```bash
+git push -u origin retune
+```
+
+```title="output"
+ * [new branch]      retune -> retune
+branch 'retune' set up to track 'origin/retune'.
+remote: Create a pull request for 'retune' on GitHub by visiting:
+remote:   https://github.com/your-username/my_decay_analysis/pull/new/retune
+```
+
+**Check it's really on the remote:** open your repo on GitHub and click the **branch dropdown**
+(top-left, currently says `main`) — `retune` now appears in the list. Select it and you'll see
+your commits and the updated `fit.py` — proof your local work is now on GitHub. From here you'd
+open a **Pull Request** (as in §4) to merge `retune` into `main`.
+
+!!! tip "Your branch, your `push`"
+    `git push -u origin retune` publishes the branch and links it to `origin/retune`, so after
+    this first push you just type `git push`. Pushing a **branch** never touches `main` — it
+    only updates that branch on GitHub. `main` changes only when a PR is merged.
 
 !!! tip "Cleaner history: `git pull --rebase` (fetch + **rebase**)"
     Every `git pull` that has to combine work leaves a **merge commit** behind; over a long
@@ -583,6 +605,7 @@ Keep building your feature on the latest code; later you'll push the branch and 
 - [x] You resolved a **merge conflict** by choosing the better change
 - [x] You synced your branch with `main` using **`git pull`** (= fetch + merge), and know
       `--rebase` as the tidy alternative
+- [x] You **pushed a local branch** to GitHub and saw the changes on the remote
 
 </div>
 
