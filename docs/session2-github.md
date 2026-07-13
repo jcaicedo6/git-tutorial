@@ -288,46 +288,76 @@ git branch -d add-mass-plot
 ## 5. Merge conflicts: when two branches change the same line
 
 The classic conflict: two teammates each branch off `main` and edit the **same line** of the
-same file. The first branch merges fine. When the second one merges, git can't tell which
-edit should win — so it stops and asks *you*. Let's reproduce it end-to-end (playing both
-teammates) and resolve it by **deciding which change is better**.
+same file. The first branch merges fine; when the second one merges, git can't tell which edit
+should win — so it stops and asks *you*. We'll play both teammates and resolve it by **deciding
+which change is better**.
 
-**1 · Two branches edit the same line.** First, one teammate widens the region:
+!!! note "Keep an eye on which branch you're on"
+    This section hops between three branches. Your shell prompt usually shows the current
+    branch, and `git status` always says `On branch …` at the top. Glance at it before each
+    step. And **always commit before you `git switch`** — otherwise git refuses, to avoid
+    losing your edits.
+
+**1 · Make the first branch, `wide`.** Create it off `main` and widen the region:
 
 ```bash
 git switch main
-git switch -c widen-region
+git switch -c wide
 ```
 
-Edit the first line of `fit.py` to `signal_region = (5.20, 5.30)  # GeV — wider, more signal`,
-then commit:
+Edit the **first line** of `fit.py` to read exactly:
+
+```python title="fit.py — first line"
+signal_region = (5.20, 5.30)  # GeV — wider, more signal
+```
+
+Then stage and commit:
 
 ```bash
 git add fit.py
-git commit -m "Widen signal region for more signal"
+git commit -m "Widen the signal region"
 ```
 
-Now the other teammate starts a **separate** branch off `main` and tightens the *same* line:
+**2 · Make the second branch, `tight`.** Go back to `main` (the common starting point) and
+create a *separate* branch that tightens the **same line**:
 
 ```bash
 git switch main
-git switch -c tighten-region
+git switch -c tight
 ```
 
-Edit that first line to `signal_region = (5.26, 5.29)  # GeV — tighter, less background`, then
-commit:
+Edit that same first line to:
+
+```python title="fit.py — first line"
+signal_region = (5.26, 5.29)  # GeV — tighter, less background
+```
+
+Stage and commit:
 
 ```bash
 git add fit.py
-git commit -m "Tighten signal region to cut background"
+git commit -m "Tighten the signal region"
 ```
 
-**2 · Merge the first branch — no problem.** `widen-region` branched straight off `main`, so
-it merges cleanly:
+**3 · Check your branches before merging.** You'll merge them **by name** next, so confirm the
+exact spelling:
+
+```bash
+git branch
+```
+
+```title="output"
+  main
+* tight
+  wide
+```
+
+**4 · Merge the first branch — clean.** Switch to `main` and merge `wide`. Nothing else has
+touched that line yet, so it merges with no conflict:
 
 ```bash
 git switch main
-git merge widen-region
+git merge wide
 ```
 
 ```title="output"
@@ -336,11 +366,11 @@ Fast-forward
  fit.py | 2 +-
 ```
 
-**3 · Merge the second branch — conflict!** `tighten-region` changed the same line that
-`widen-region` just changed on `main`, so git can't reconcile them on its own:
+**5 · Merge the second branch — conflict!** `tight` changed the same line that `wide` just put
+on `main`, so git stops and hands the decision to you:
 
 ```bash
-git merge tighten-region
+git merge tight
 ```
 
 ```title="output"
@@ -349,24 +379,25 @@ CONFLICT (content): Merge conflict in fit.py
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-Open `fit.py` — git shows **both versions**, separated by markers:
+Open `fit.py` — git has written **both versions** into the file, separated by markers:
 
 ```python title="fit.py (with conflict markers)"
 <<<<<<< HEAD
 signal_region = (5.20, 5.30)  # GeV — wider, more signal
 =======
 signal_region = (5.26, 5.29)  # GeV — tighter, less background
->>>>>>> tighten-region
+>>>>>>> tight
 ```
 
-- The part **above** `=======` (`HEAD`) is what's on `main` now — the *wider* window.
-- The part **below** is coming from `tighten-region` — the *tighter* window.
+- Everything between `<<<<<<< HEAD` and `=======` is **on `main` now** — the *wider* window.
+- Everything between `=======` and `>>>>>>> tight` is **coming from `tight`** — the *tighter* window.
 
-**4 · Decide which change is best.** This is a physics choice, not a git one: you and your
-teammate talk it over and agree the tighter window rejects more background. So keep that line,
-**delete all three marker lines**, and drop the wider one:
+**6 · Decide which change is best.** This is a physics choice, not a git one: you and your
+teammate agree the tighter window rejects more background. So make the file read *just* the
+line you want — **delete the two versions you don't want and all three marker lines**
+(`<<<<<<<`, `=======`, `>>>>>>>`):
 
-```python title="fit.py (resolved)"
+```python title="fit.py (resolved — first line)"
 signal_region = (5.26, 5.29)  # GeV — tighter window (agreed: less background)
 ```
 
@@ -374,20 +405,28 @@ Stage the resolved file and commit to finish the merge:
 
 ```bash
 git add fit.py
-git commit -m "Merge tighten-region; keep the tighter window (less background)"
+git commit -m "Merge tight: keep the tighter window (less background)"
 ```
 
-Run it to confirm nothing broke, then tidy up the two branches:
+Run it to confirm nothing broke, then delete the two now-merged branches:
 
 ```bash
 python fit.py
-git branch -d widen-region tighten-region
+git branch -d wide tight
 ```
 
-!!! tip "`git status` guides you through a conflict"
-    Stuck mid-conflict? Run `git status` — it lists the files "both modified" and reminds you
-    to `git add` them once fixed. Want to bail out completely? `git merge --abort` restores
-    everything to just before the merge.
+??? failure "Stuck? The two errors people hit here"
+    **`merge: tight - not something we can merge`** — git can't find a branch with that name,
+    almost always a **typo** (e.g. `tigthten`). Run `git branch` to see the real names and
+    merge the one that's actually listed.
+
+    **`Your local changes to the following files would be overwritten by checkout`** — you
+    edited `fit.py` but didn't commit before `git switch`. Commit it first
+    (`git add fit.py && git commit -m "…"`), then switch. To throw the edit away instead, use
+    `git restore fit.py`.
+
+    Mid-conflict and want out? **`git merge --abort`** puts everything back to before the
+    merge. And `git status` always tells you what to do next.
 
 ---
 
@@ -418,7 +457,7 @@ from the merge in §5.
 
 ```bash
 git switch main
-git switch -c retune-region
+git switch -c retune
 ```
 
 Edit the first line of `fit.py` to `signal_region = (5.25, 5.30)  # GeV — my retune`, then:
@@ -446,7 +485,7 @@ git commit -m "Widen signal region (merged PR)"
 your work on top of the updated `main`:
 
 ```bash
-git switch retune-region
+git switch retune
 git rebase main
 ```
 
