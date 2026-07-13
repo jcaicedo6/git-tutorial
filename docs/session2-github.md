@@ -272,8 +272,8 @@ Now open the PR on GitHub:
 !!! info "What a Pull Request actually is"
     A PR is a *request to merge one branch into another*, wrapped in a page for **review and
     discussion**. It shows the diff, lets teammates comment line-by-line, runs any automated
-    checks (tests / CI), and records who approved — all *before* the change touches `main`.
-    It's how real teams keep `main` always working.
+    checks (tests / CI (Continous Integration)), and records who approved — all *before* the 
+    change touches `main`. It's how real teams keep `main` always working.
 
 Back on your laptop, sync the merged result and clean up your local branch:
 
