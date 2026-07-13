@@ -53,19 +53,18 @@ By the end students can, on their own laptops:
 ### Session 2 — GitHub (~30 min)
 | Min | Section |
 |-----|---------|
-| 0–4 | §1 Create empty repo (watch the "don't add README" trap; grab the matching URL) |
-| 4–9 | §2 `remote add` + `push` — the payoff moment |
-| 9–13 | §3 Team loop (discuss, don't type) |
-| — | **Collaboration deep-dive (do live, or when teams first need it):** |
-| 13–19 | §4 Pull Requests — push a branch, open a PR, review, merge on GitHub |
-| 19–25 | §5 Merge conflict — two branches, same line; resolve → finish with `commit` |
-| 25–31 | §6 `git pull` = fetch + merge; sync a branch with `main`, hit + resolve a conflict |
+| 0–5 | §1 Create empty repo (watch the "don't add README" trap; grab the matching URL) |
+| 5–11 | §2 `remote add` + `push` — the payoff moment |
+| 11–16 | §3 Team loop (discuss, don't type) |
+| 16–22 | §4 Pull Requests — push a branch, open a PR, review, merge on GitHub |
+| 22–30 | §5 `git pull` = fetch + merge; sync a branch with `main`, hit + resolve a conflict |
 
-> §4–§6 push Session 2 past 15 min. If time is tight, **demo them on the projector** and
-> point teams back to the page when they hit their first real PR, conflict, or sync.
-> Two things to make land in §6: (1) **`git pull` = `git fetch` + `git merge`** — that's why a
+> Two things to make land in §5: (1) **`git pull` = `git fetch` + `git merge`** — that's why a
 > pull can conflict; (2) **a plain `git commit` never conflicts** — conflicts only happen when
-> branches are *combined*. `git pull --rebase` is introduced only as the tidy-history variant.
+> branches are *combined*. Only one conflict is walked through (the pull/sync one — the most
+> common); the collapsible **"other places conflicts show up"** table (two PRs, rebase) is
+> reference-only, for teams to consult when they hit it. If time is tight, demo §4–§5 on the
+> projector and point teams back to the page.
 
 ## Pre-session setup check (do this before students arrive)
 

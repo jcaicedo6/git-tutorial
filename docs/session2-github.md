@@ -3,8 +3,8 @@
 !!! abstract "Goal"
     Take the repo you built in Session 1, put it online on GitHub, learn the everyday loop
     (`clone → pull → commit → push`), and finish with the real team workflow: **Pull
-    Requests**, resolving a **merge conflict**, and syncing with `main` via **`git pull`**
-    (fetch + merge).
+    Requests** and syncing with `main` via **`git pull`** (fetch + merge) — resolving a
+    **merge conflict** along the way.
 
     :octicons-clock-16: ~30 min &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo
     from Session 1, plus everything from [Setup](setup.md) (account + a connection method)
@@ -286,158 +286,7 @@ git branch -d add-mass-plot
 
 ---
 
-## 5. Merge conflicts: when two branches change the same line
-
-The classic conflict: two teammates each branch off `main` and edit the **same line** of the
-same file. The first branch merges fine; when the second one merges, git can't tell which edit
-should win — so it stops and asks *you*. We'll play both teammates and resolve it by **deciding
-which change is better**.
-
-!!! note "Keep an eye on which branch you're on"
-    This section hops between three branches. Your shell prompt usually shows the current
-    branch, and `git status` always says `On branch …` at the top. Glance at it before each
-    step. And **always commit before you `git switch`** — otherwise git refuses, to avoid
-    losing your edits.
-
-**1 · Make the first branch, `wide`.** Create it off `main` and widen the region:
-
-```bash
-git switch main
-git switch -c wide
-```
-
-Edit the **first line** of `fit.py` to read exactly:
-
-```python title="fit.py — first line"
-signal_region = (5.20, 5.30)  # GeV — wider, more signal
-```
-
-Then stage and commit:
-
-```bash
-git add fit.py
-git commit -m "Widen the signal region"
-```
-
-**2 · Make the second branch, `tight`.** Go back to `main` (the common starting point) and
-create a *separate* branch that tightens the **same line**:
-
-```bash
-git switch main
-git switch -c tight
-```
-
-Edit that same first line to:
-
-```python title="fit.py — first line"
-signal_region = (5.26, 5.29)  # GeV — tighter, less background
-```
-
-Stage and commit:
-
-```bash
-git add fit.py
-git commit -m "Tighten the signal region"
-```
-
-**3 · Check your branches before merging.** You'll merge them **by name** next, so confirm the
-exact spelling:
-
-```bash
-git branch
-```
-
-```title="output"
-  main
-* tight
-  wide
-```
-
-**4 · Merge the first branch — clean.** Switch to `main` and merge `wide`. Nothing else has
-touched that line yet, so it merges with no conflict:
-
-```bash
-git switch main
-git merge wide
-```
-
-```title="output"
-Updating a1b2c3d..c0ffee1
-Fast-forward
- fit.py | 2 +-
-```
-
-**5 · Merge the second branch — conflict!** `tight` changed the same line that `wide` just put
-on `main`, so git stops and hands the decision to you:
-
-```bash
-git merge tight
-```
-
-```title="output"
-Auto-merging fit.py
-CONFLICT (content): Merge conflict in fit.py
-Automatic merge failed; fix conflicts and then commit the result.
-```
-
-Open `fit.py` — git has written **both versions** into the file, separated by markers:
-
-```python title="fit.py (with conflict markers)"
-<<<<<<< HEAD
-signal_region = (5.20, 5.30)  # GeV — wider, more signal
-=======
-signal_region = (5.26, 5.29)  # GeV — tighter, less background
->>>>>>> tight
-```
-
-- Everything between `<<<<<<< HEAD` and `=======` is **on `main` now** — the *wider* window.
-- Everything between `=======` and `>>>>>>> tight` is **coming from `tight`** — the *tighter* window.
-
-**6 · Decide which change is best.** This is a physics choice, not a git one: you and your
-teammate agree the tighter window rejects more background. So make the file read *just* the
-line you want — **delete the two versions you don't want and all three marker lines**
-(`<<<<<<<`, `=======`, `>>>>>>>`):
-
-```python title="fit.py (resolved — first line)"
-signal_region = (5.26, 5.29)  # GeV — tighter window (agreed: less background)
-```
-
-Stage the resolved file and commit to finish the merge:
-
-```bash
-git add fit.py
-git commit -m "Merge tight: keep the tighter window (less background)"
-```
-
-Run it to confirm nothing broke, then delete the two now-merged branches:
-
-```bash
-python fit.py
-git branch -d wide tight
-```
-
-??? failure "Stuck? Common errors people hit here"
-    **`fatal: cannot do a partial commit during a merge`** — you ran `git commit` **without
-    `-m`**, e.g. `git commit "my message"`. Without the flag, git reads `"my message"` as a
-    *filename* to commit, and committing a single file mid-merge isn't allowed. Add the flag:
-    `git commit -m "my message"` (or run a bare `git commit`, which opens an editor with a
-    ready-made merge message).
-
-    **`merge: tight - not something we can merge`** — git can't find a branch with that name,
-    almost always a **typo** (e.g. `tigthten`). Run `git branch` to see the real names and
-    merge the one that's actually listed.
-
-    **`Your local changes to the following files would be overwritten by checkout`** — you
-    edited `fit.py` but didn't commit before `git switch`. Commit it first
-    (`git add fit.py && git commit -m "…"`), then switch. To throw the edit away instead, use
-    `git restore fit.py`.
-
-    Mid-conflict and want out? **`git merge --abort`** puts everything back to before the
-    merge. And `git status` always tells you what to do next.
-
----
-
-## 6. Sync your branch with `main` using `git pull`
+## 5. Sync your branch with `main` using `git pull`
 
 Here's the situation on every team. You branch off `main` and start a feature. While you work,
 teammates keep merging their PRs, so **`main` moves ahead of where you started**. Before you go
@@ -453,14 +302,13 @@ yesterday's. The everyday command for that is **`git pull`**.
       files don't change yet.
     - **`git merge`** then combines those downloaded commits into the branch you're on.
 
-    So `git pull` is simply "**download, then merge**," in one command. And because the second
-    half is a *merge*, a `pull` can raise the **same kind of conflict** you resolved in §5 —
-    which is exactly what we'll make happen here.
+    So `git pull` is simply "**download, then merge**," in one command. Because the second half
+    is a *merge*, a `pull` can raise a **conflict** — which we'll deliberately trigger and fix.
 
 !!! warning "Conflicts come from *combining* branches — never from `commit`"
     A plain `git commit` **cannot** produce a conflict — it only saves your own work. Conflicts
-    appear during `merge` / `pull` / `rebase`, the moment two histories are joined. In this
-    section the conflict shows up at the **pull** step — *not* when you commit your own change.
+    appear during `merge` / `pull` / `rebase`, the moment two histories are joined. Here the
+    conflict shows up at the **pull** step — *not* when you commit your own change.
 
 Let's walk the real flow. (You'll play the teammate too, so you can reproduce it solo.)
 
@@ -516,7 +364,8 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 *(Had you touched different lines, there'd be no conflict — the merge would just finish.)*
 
-Open `fit.py` — the same `<<< === >>>` markers from §5:
+**4 · Resolve the conflict.** Open `fit.py` — git has written **both versions** into the file,
+separated by markers:
 
 ```python title="fit.py (with conflict markers)"
 <<<<<<< HEAD
@@ -526,17 +375,17 @@ signal_region = (5.18, 5.32)  # GeV — merged PR
 >>>>>>> main
 ```
 
-- Above `=======` (`HEAD`) is **your branch** — your retune.
-- Below is **`main`** — the merged PR.
+- Everything between `<<<<<<< HEAD` and `=======` is **your branch** — your retune.
+- Everything between `=======` and `>>>>>>> main` is **coming from `main`** — the merged PR.
 
-Pick the final line, **delete the three marker lines**, and save — say you keep your retune, now
-sitting on top of the merged change:
+Decide the final line (a physics choice, not a git one), then **delete the version you don't
+want and all three marker lines** (`<<<<<<<`, `=======`, `>>>>>>>`). Say you keep your retune:
 
 ```python title="fit.py (resolved)"
 signal_region = (5.25, 5.30)  # GeV — retuned, on top of the merged PR
 ```
 
-Stage and commit to finish the merge — exactly like §5:
+Stage the resolved file and commit to finish the merge:
 
 ```bash
 git add fit.py
@@ -549,7 +398,7 @@ Confirm it runs — your branch now has `main`'s work **and** your retune:
 python fit.py
 ```
 
-**4 · Push your branch to GitHub.** So far this work only exists on your laptop. Publish the
+**5 · Push your branch to GitHub.** So far this work only exists on your laptop. Publish the
 `retune` branch so it lands on the remote:
 
 ```bash
@@ -564,33 +413,37 @@ remote:   https://github.com/your-username/my_decay_analysis/pull/new/retune
 ```
 
 **Check it's really on the remote:** open your repo on GitHub and click the **branch dropdown**
-(top-left, currently says `main`) — `retune` now appears in the list. Select it and you'll see
-your commits and the updated `fit.py` — proof your local work is now on GitHub. From here you'd
-open a **Pull Request** (as in §4) to merge `retune` into `main`.
+(top-left, currently says `main`) — `retune` now appears in the list. Select it to see your
+commits and the updated `fit.py` — proof your local work is now on GitHub. From here you'd open
+a **Pull Request** (as in §4) to merge `retune` into `main`.
 
 !!! tip "Your branch, your `push`"
     `git push -u origin retune` publishes the branch and links it to `origin/retune`, so after
     this first push you just type `git push`. Pushing a **branch** never touches `main` — it
     only updates that branch on GitHub. `main` changes only when a PR is merged.
 
-??? tip "Optional: cleaner history with `git pull --rebase` (fetch + **rebase**)"
-    Every `git pull` that has to combine work leaves a **merge commit** behind; over a long
-    branch these pile up and clutter the history. Many teams prefer **`git pull --rebase`**
-    (= `git fetch` + `git rebase`), which *replays* your commits on top of the fetched `main`
-    for a straight, linear history:
+??? info "Reference: other places conflicts show up (keep for later)"
+    A conflict always means the **same lines were changed two ways**, and the fix is always the
+    same: open the file, keep the version you want, delete the `<<< === >>>` markers, then
+    `git add`. Only the **final step** differs by situation:
 
-    ```
-    Before rebase                        After  git pull --rebase
+    | Situation | How it happens | Finish with |
+    |-----------|----------------|-------------|
+    | **Pull / merge** (this section) | `git pull` or `git merge` brings in others' work that touched your lines | `git commit` |
+    | **Two PRs, same line** | Two teammates' branches edit the same line; the *second* PR to merge conflicts (resolve on GitHub or locally) | `git commit` |
+    | **Rebase** | `git rebase` / `git pull --rebase` replays your commits on the updated `main` for a linear history | `git rebase --continue` |
 
-    A───B───C  (main, +merged commit C)  A───B───C  (main)
-         \                                        \
-          X  (your commit, based on               X'  (your commit, replayed
-              the old main at B)                       on top of the new main)
-    ```
+    Escape hatch for any of them: **`git merge --abort`** / **`git rebase --abort`** returns you
+    to safety. `git status` always names the conflicted files and the next step. Golden rule for
+    rebase: only rebase your **own, un-pushed** commits.
 
-    Same markers if it conflicts, but you **finish differently**: `git add` then **`git rebase
-    --continue`** (no merge commit). Stuck mid-combine either way? `git merge --abort` /
-    `git rebase --abort` resets you. Golden rule: only rebase your **own, un-pushed** commits.
+??? failure "Stuck? Common errors"
+    - **`fatal: cannot do a partial commit during a merge`** — you ran `git commit` **without
+      `-m`** (git read your message as a filename). Use `git commit -m "…"`.
+    - **`Your local changes … would be overwritten by checkout`** — you edited a file but didn't
+      commit before `git switch`. Commit first, or `git restore <file>` to discard the edit.
+    - **Want to bail out?** `git merge --abort` returns you to before the merge; `git status`
+      always shows the next step.
 
 ---
 
@@ -602,9 +455,8 @@ open a **Pull Request** (as in §4) to merge `retune` into `main`.
 - [x] You can push and pull (token-cached over HTTPS, or passwordless over SSH)
 - [x] You know the team workflow: **clone → pull → commit → push**
 - [x] You opened and merged a **Pull Request**
-- [x] You resolved a **merge conflict** by choosing the better change
-- [x] You synced your branch with `main` using **`git pull`** (= fetch + merge), and know
-      `--rebase` as the tidy alternative
+- [x] You synced your branch with `main` (**`git pull`** = fetch + merge) and resolved the
+      **merge conflict** by choosing which change to keep
 - [x] You **pushed a local branch** to GitHub and saw the changes on the remote
 
 </div>
@@ -617,3 +469,8 @@ branching ratio, and poster figures, all versioned and shared.
 [Back to Session 1](session1-git.md){ .md-button }
 
 Happy hacking! :test_tube:
+
+---
+
+<small>:material-star-outline: Found this useful? You can [star the repo](https://github.com/jcaicedo6/git-tutorial)
+or [follow me on GitHub](https://github.com/jcaicedo6) — totally optional, and good `git` practice. :material-github:</small>
