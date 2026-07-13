@@ -422,20 +422,78 @@ a **Pull Request** (as in §4) to merge `retune` into `main`.
     this first push you just type `git push`. Pushing a **branch** never touches `main` — it
     only updates that branch on GitHub. `main` changes only when a PR is merged.
 
-??? info "Reference: other places conflicts show up (keep for later)"
-    A conflict always means the **same lines were changed two ways**, and the fix is always the
-    same: open the file, keep the version you want, delete the `<<< === >>>` markers, then
-    `git add`. Only the **final step** differs by situation:
+??? info "Reference: other places conflicts show up, and how to solve each (keep for later)"
+    Every conflict means the **same lines changed two ways**. The **core fix never changes**:
 
-    | Situation | How it happens | Finish with |
-    |-----------|----------------|-------------|
-    | **Pull / merge** (this section) | `git pull` or `git merge` brings in others' work that touched your lines | `git commit` |
-    | **Two PRs, same line** | Two teammates' branches edit the same line; the *second* PR to merge conflicts (resolve on GitHub or locally) | `git commit` |
-    | **Rebase** | `git rebase` / `git pull --rebase` replays your commits on the updated `main` for a linear history | `git rebase --continue` |
+    1. Run `git status` — it lists the conflicted files under *"Unmerged paths"*.
+    2. Open each one, find the `<<<<<<<  =======  >>>>>>>` markers, keep the version you want, and
+       **delete the other version plus all three marker lines**.
+    3. `git add <file>` to mark it resolved.
+    4. **Finish the operation** — and *only this last step* differs by situation, below.
 
-    Escape hatch for any of them: **`git merge --abort`** / **`git rebase --abort`** returns you
-    to safety. `git status` always names the conflicted files and the next step. Golden rule for
-    rebase: only rebase your **own, un-pushed** commits.
+    ---
+
+    **A · Two Pull Requests touch the same line**
+
+    You opened a PR; a teammate's PR merged into `main` first and changed the same line. GitHub
+    now shows *"This branch has conflicts that must be resolved."*
+
+    - **Small conflict → fix it on GitHub:** click **Resolve conflicts**, edit the file in the web
+      editor (remove the markers), **Mark as resolved** → **Commit merge**.
+    - **Anything bigger → fix it locally**, then push:
+
+    ```bash
+    git switch add-mass-plot     # your PR's branch
+    git fetch origin             # get main's new commits
+    git merge origin/main        # replay them under yours → conflict
+    # edit fit.py: keep the right line, delete the markers
+    git add fit.py
+    git commit                   # finishes the merge (opens a ready-made message)
+    git push                     # updates the PR — the conflict banner clears
+    ```
+
+    **B · A rebase hits a conflict**
+
+    You prefer a linear history, so you replay your commits on top of the latest `main` instead
+    of merging:
+
+    ```bash
+    git switch add-mass-plot
+    git rebase main              # or: git pull --rebase origin main
+    # CONFLICT → edit fit.py, keep the right line, delete the markers
+    git add fit.py
+    git rebase --continue        # NOT git commit — this is how a rebase finishes
+    git push --force-with-lease  # history was rewritten, so a (safe) force-push is needed
+    ```
+
+    A rebase can pause **once per replayed commit** — just resolve, `git add`, `git rebase
+    --continue`, and repeat until it's done. `git rebase --abort` cancels the whole thing.
+
+    **C · `git pull` on a shared branch (e.g. `main`)**
+
+    You and a teammate both pushed to the same branch. Your `git push` is rejected
+    (*"Updates were rejected… fetch first"*); you pull and it conflicts:
+
+    ```bash
+    git pull                     # = fetch + merge; may conflict
+    # edit the file, keep the right lines, delete the markers
+    git add fit.py
+    git commit                   # (or: git rebase --continue, if you used git pull --rebase)
+    git push
+    ```
+
+    ---
+
+    **How each one *finishes* — the one thing to remember:**
+
+    | You were running… | Finish with |
+    |-------------------|-------------|
+    | `git merge` / `git pull` | `git add` → **`git commit`** |
+    | `git rebase` / `git pull --rebase` | `git add` → **`git rebase --continue`** |
+
+    Always-safe escape hatch: **`git merge --abort`** or **`git rebase --abort`** returns you to
+    exactly before the operation. Golden rule: only rebase your **own, un-pushed** commits (or a
+    branch only you use — that's why `--force-with-lease` is OK in case B).
 
 ??? failure "Stuck? Common errors"
     - **`fatal: cannot do a partial commit during a merge`** — you ran `git commit` **without
