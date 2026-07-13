@@ -1,0 +1,62 @@
+/* ---- Belle II / DUNE workshop theme touches ---- */
+
+:root {
+  --md-primary-fg-color: #5e35b1;
+  --md-accent-fg-color: #ffb300;
+}
+
+/* Hero subtitle under the H1 on the landing page */
+.hero-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--md-default-fg-color--light);
+  margin: -0.4rem 0 1.4rem 0;
+}
+
+/* Author byline under the hero subtitle */
+.byline {
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  margin: -0.8rem 0 1.6rem 0;
+}
+.byline a {
+  color: var(--md-accent-fg-color);
+  text-decoration: none;
+}
+
+/* Card grid: gentle lift on hover */
+.md-typeset .grid.cards > ul > li {
+  border-radius: 0.6rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  border-color: var(--md-accent-fg-color);
+}
+
+/* Accent color for inline icons flagged with .accent */
+.accent {
+  color: var(--md-accent-fg-color) !important;
+}
+
+/* Make the checklist recap boxes stand out a little */
+.checklist .task-list-control + * {
+  font-weight: 500;
+}
+
+/* Give "output" code blocks a subtle, terminal-like distinction */
+.md-typeset .highlight [data-md-title="output"],
+.md-typeset .highlight [data-md-title~="output"] {
+  opacity: 0.9;
+}
+
+/* Slightly larger, friendlier body text for a teaching site */
+.md-typeset {
+  font-size: 0.82rem;
+}
+
+/* Rounded buttons */
+.md-typeset .md-button {
+  border-radius: 2rem;
+}

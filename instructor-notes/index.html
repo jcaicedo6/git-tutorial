@@ -1,0 +1,1124 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A hands-on git & GitHub tutorial for the Belle II / DUNE analysis workshop">
+      
+      
+        <meta name="author" content="Johan Caicedo">
+      
+      
+        <link rel="canonical" href="https://jcaicedo6.github.io/git-tutorial/instructor-notes/">
+      
+      
+        <link rel="prev" href="../cheatsheet/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://raw.githubusercontent.com/squidfunk/mkdocs-material/master/docs/assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>For Instructors - Git for Physics Analysis</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#instructor-facilitator-notes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Git for Physics Analysis" class="md-header__button md-logo" aria-label="Git for Physics Analysis" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14c-3.36 0-4.46 1.35-4.82 2.24C9.25 16.7 10 17.76 10 19a3 3 0 0 1-3 3 3 3 0 0 1-3-3c0-1.31.83-2.42 2-2.83V7.83A2.99 2.99 0 0 1 4 5a3 3 0 0 1 3-3 3 3 0 0 1 3 3c0 1.31-.83 2.42-2 2.83v5.29c.88-.65 2.16-1.12 4-1.12 2.67 0 3.56-1.34 3.85-2.23A3.01 3.01 0 0 1 14 7a3 3 0 0 1 3-3 3 3 0 0 1 3 3c0 1.34-.88 2.5-2.09 2.86C17.65 11.29 16.68 14 13 14m-6 4a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1M7 4a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1m10 2a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Git for Physics Analysis
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              For Instructors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jcaicedo6/git-tutorial" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jcaicedo6/git-tutorial
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Git for Physics Analysis" class="md-nav__button md-logo" aria-label="Git for Physics Analysis" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14c-3.36 0-4.46 1.35-4.82 2.24C9.25 16.7 10 17.76 10 19a3 3 0 0 1-3 3 3 3 0 0 1-3-3c0-1.31.83-2.42 2-2.83V7.83A2.99 2.99 0 0 1 4 5a3 3 0 0 1 3-3 3 3 0 0 1 3 3c0 1.31-.83 2.42-2 2.83v5.29c.88-.65 2.16-1.12 4-1.12 2.67 0 3.56-1.34 3.85-2.23A3.01 3.01 0 0 1 14 7a3 3 0 0 1 3-3 3 3 0 0 1 3 3c0 1.34-.88 2.5-2.09 2.86C17.65 11.29 16.68 14 13 14m-6 4a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1M7 4a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1m10 2a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1"/></svg>
+
+    </a>
+    Git for Physics Analysis
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jcaicedo6/git-tutorial" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jcaicedo6/git-tutorial
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup · Get Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session1-git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Session 1 · Git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session2-github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Session 2 · GitHub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheat Sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    For Instructors
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    For Instructors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Timing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-get-ready-1520-min-do-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup — Get Ready (~15–20 min, do first)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-1-git-35-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session 1 — Git (~35 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-2-github-30-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session 2 — GitHub (~30 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-session-setup-check-do-this-before-students-arrive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-session setup check (do this before students arrive)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-pitfalls-quick-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common pitfalls &amp; quick fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teaching-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teaching tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-prepare-a-team-repo-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: prepare a team repo template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-tutorial-deliberately-skips-mention-dont-teach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What this tutorial deliberately skips (mention, don't teach)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Timing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-get-ready-1520-min-do-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup — Get Ready (~15–20 min, do first)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-1-git-35-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session 1 — Git (~35 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-2-github-30-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session 2 — GitHub (~30 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-session-setup-check-do-this-before-students-arrive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-session setup check (do this before students arrive)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-pitfalls-quick-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common pitfalls &amp; quick fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teaching-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teaching tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-prepare-a-team-repo-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: prepare a team repo template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-tutorial-deliberately-skips-mention-dont-teach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What this tutorial deliberately skips (mention, don't teach)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="instructor-facilitator-notes">Instructor / Facilitator Notes<a class="headerlink" href="#instructor-facilitator-notes" title="Permanent link">&para;</a></h1>
+<p>Everything you need to run the sessions smoothly. Students never need this file.</p>
+<p>The flow is <strong>Setup → Session 1 (git) → Session 2 (GitHub)</strong>. Get <em>everyone</em> through
+Setup before starting Session 1 — a half-configured room stalls the whole group.</p>
+<h2 id="learning-objectives">Learning objectives<a class="headerlink" href="#learning-objectives" title="Permanent link">&para;</a></h2>
+<p>By the end students can, on their own laptops:
+1. Install git and connect their laptop to GitHub (HTTPS or SSH).
+2. Explain <em>why</em> version control matters for a shared analysis.
+3. Run the core loop: <code>init → add → commit</code>, and inspect with <code>status / log / diff</code>.
+4. Undo uncommitted mistakes and keep large data out with <code>.gitignore</code>.
+5. Branch, test their code, and merge it back into <code>main</code>.
+6. Push a local repo to GitHub and run the team loop: <code>clone → pull → commit → push</code>.
+7. Open and merge a <strong>Pull Request</strong>, resolve a <strong>merge conflict</strong>, and sync a branch with
+   <code>main</code> using <code>git pull</code> (understanding it as <code>fetch</code> + <code>merge</code>).</p>
+<h2 id="timing">Timing<a class="headerlink" href="#timing" title="Permanent link">&para;</a></h2>
+<h3 id="setup-get-ready-1520-min-do-first">Setup — Get Ready (~15–20 min, do first)<a class="headerlink" href="#setup-get-ready-1520-min-do-first" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Min</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–5</td>
+<td>§1 Check/install git — <strong>poll the room: who has git? who has an account?</strong></td>
+</tr>
+<tr>
+<td>5–8</td>
+<td>§2 GitHub account — those who have one sign in and wait; help the new ones</td>
+</tr>
+<tr>
+<td>8–10</td>
+<td>§3 <code>git config</code> identity</td>
+</tr>
+<tr>
+<td>10–18</td>
+<td>§4 Connect to GitHub — <strong>HTTPS (Option A) or SSH (Option B)</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>This is the session that runs long.</strong> For a fast, low-friction start, steer most
+students to <strong>HTTPS (Option A)</strong> — a token plus a credential helper, no keygen. Reserve
+<strong>SSH (Option B)</strong> for those on their own laptop who want passwordless pushes; it's
+fiddlier (Windows agent, macOS Keychain). Have 1–2 floating helpers. Whichever they pick,
+the real test is the first <code>push</code> in Session 2 — don't linger here waiting for perfection.</p>
+</blockquote>
+<h3 id="session-1-git-35-min">Session 1 — Git (~35 min)<a class="headerlink" href="#session-1-git-35-min" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Min</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–2</td>
+<td>§0 Why git (talk over the mental-model diagram)</td>
+</tr>
+<tr>
+<td>2–3</td>
+<td>§1 Confirm setup (<code>git config --global --list</code>)</td>
+</tr>
+<tr>
+<td>3–6</td>
+<td>§2 <code>git init</code></td>
+</tr>
+<tr>
+<td>6–11</td>
+<td>§3 First commit — <strong>the key moment; make sure everyone gets Checkpoint 1</strong></td>
+</tr>
+<tr>
+<td>11–15</td>
+<td>§4 Change + diff + second commit (Checkpoint 2)</td>
+</tr>
+<tr>
+<td>15–18</td>
+<td>§5 Undo with <code>restore</code></td>
+</tr>
+<tr>
+<td>18–22</td>
+<td>§6 <code>.gitignore</code> (Checkpoint 3) — stress the "no big ROOT files" point</td>
+</tr>
+<tr>
+<td>22–30</td>
+<td>§7 Branch → <strong>edit <code>fit.py</code> in an editor, RUN it</strong>, commit (Checkpoint 4 prep)</td>
+</tr>
+<tr>
+<td>30–35</td>
+<td>§8 Merge branch into <code>main</code>, delete branch, tease PRs (Checkpoint 4)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>§7–§8 are now core, not stretch: they close the <strong>branch → edit → test → commit → merge</strong>
+loop. Hammer the "<strong>edit the file, don't <code>echo</code>-clobber it; then run it before you
+commit</strong>" point — it's the habit that keeps a team's analysis working.</p>
+</blockquote>
+<h3 id="session-2-github-30-min">Session 2 — GitHub (~30 min)<a class="headerlink" href="#session-2-github-30-min" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Min</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–5</td>
+<td>§1 Create empty repo (watch the "don't add README" trap; grab the matching URL)</td>
+</tr>
+<tr>
+<td>5–11</td>
+<td>§2 <code>remote add</code> + <code>push</code> — the payoff moment</td>
+</tr>
+<tr>
+<td>11–16</td>
+<td>§3 Team loop (discuss, don't type)</td>
+</tr>
+<tr>
+<td>16–22</td>
+<td>§4 Pull Requests — push a branch, open a PR, review, merge on GitHub</td>
+</tr>
+<tr>
+<td>22–30</td>
+<td>§5 <code>git pull</code> = fetch + merge; sync a branch with <code>main</code>, hit + resolve a conflict</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Two things to make land in §5: (1) <strong><code>git pull</code> = <code>git fetch</code> + <code>git merge</code></strong> — that's why a
+pull can conflict; (2) <strong>a plain <code>git commit</code> never conflicts</strong> — conflicts only happen when
+branches are <em>combined</em>. Only one conflict is walked through (the pull/sync one — the most
+common); the collapsible <strong>"other places conflicts show up"</strong> table (two PRs, rebase) is
+reference-only, for teams to consult when they hit it. If time is tight, demo §4–§5 on the
+projector and point teams back to the page.</p>
+</blockquote>
+<h2 id="pre-session-setup-check-do-this-before-students-arrive">Pre-session setup check (do this before students arrive)<a class="headerlink" href="#pre-session-setup-check-do-this-before-students-arrive" title="Permanent link">&para;</a></h2>
+<p>The Setup page walks students through all of this, but as facilitator confirm:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>--version<span class="w">      </span><span class="c1"># need &gt;= 2.23 for `git switch`/`restore`</span>
+</code></pre></div>
+Install links:
+- git: https://git-scm.com/downloads (Windows installer bundles <strong>Git Bash</strong> — tell
+  Windows users to run everything there; macOS: <code>xcode-select --install</code> also works)</p>
+<p>If <code>git switch</code>/<code>restore</code> are missing (very old git), fall back to:
+- <code>git checkout -b &lt;branch&gt;</code> instead of <code>git switch -c</code>
+- <code>git checkout -- &lt;file&gt;</code> instead of <code>git restore &lt;file&gt;</code></p>
+<p>Also pre-set a default branch name so everyone gets <code>main</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>init.defaultBranch<span class="w"> </span>main
+</code></pre></div>
+(Some older gits default to <code>master</code>; the tutorial output assumes <code>main</code>.)</p>
+<h2 id="common-pitfalls-quick-fixes">Common pitfalls &amp; quick fixes<a class="headerlink" href="#common-pitfalls-quick-fixes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Author identity unknown</code> on commit</td>
+<td>Skipped Setup step 3</td>
+<td>Set <code>user.name</code>/<code>user.email</code></td>
+</tr>
+<tr>
+<td><code>Permission denied (publickey)</code> on push/clone</td>
+<td>SSH key not in agent or not on GitHub</td>
+<td>Redo Setup step 4; verify with <code>ssh -T git@github.com</code></td>
+</tr>
+<tr>
+<td><code>ssh -T</code> says permission denied</td>
+<td>Key never added to GitHub, or added the <strong>private</strong> key</td>
+<td>Add the <code>.pub</code> key at github.com → Settings → SSH keys</td>
+</tr>
+<tr>
+<td>Push asks for username/password (HTTPS)</td>
+<td>Normal — GitHub wants a <strong>token</strong>, not the account password</td>
+<td>Paste the PAT in the password field; enable a credential helper so it's cached</td>
+</tr>
+<tr>
+<td><code>remote: Support for password authentication was removed</code></td>
+<td>Typed account password over HTTPS</td>
+<td>Use a Personal Access Token as the password</td>
+</tr>
+<tr>
+<td>macOS forgets key each session</td>
+<td>No <code>~/.ssh/config</code> Keychain entry</td>
+<td>Add the <code>UseKeychain yes</code> block from Setup step 4b</td>
+</tr>
+<tr>
+<td><code>ssh-add</code> says "agent not running"</td>
+<td>ssh-agent not started</td>
+<td><code>eval "$(ssh-agent -s)"</code> first</td>
+</tr>
+<tr>
+<td>Nothing happens on <code>git add</code></td>
+<td>That's normal — it's silent</td>
+<td>Run <code>git status</code> to confirm</td>
+</tr>
+<tr>
+<td><code>push</code> rejected, "fetch first"</td>
+<td>Checked "Add README" on GitHub</td>
+<td><code>git pull --rebase origin main</code> then push, or recreate empty repo</td>
+</tr>
+<tr>
+<td>Committed a huge <code>.root</code> file</td>
+<td>No <code>.gitignore</code> yet</td>
+<td>Teach <code>.gitignore</code> early; for removal use <code>git rm --cached file</code></td>
+</tr>
+<tr>
+<td><code>src refspec main does not match</code></td>
+<td>No commits yet</td>
+<td>Make a commit before pushing</td>
+</tr>
+<tr>
+<td>Student on <code>master</code> not <code>main</code></td>
+<td>Old git default</td>
+<td><code>git branch -m master main</code></td>
+</tr>
+<tr>
+<td><code>python: command not found</code> running <code>fit.py</code></td>
+<td>Only <code>python3</code> installed</td>
+<td>Use <code>python3 fit.py</code></td>
+</tr>
+<tr>
+<td>Stuck mid-rebase, panicking</td>
+<td>Conflict during <code>git rebase</code></td>
+<td>Edit file → remove <code>&lt;&lt;&lt; === &gt;&gt;&gt;</code> markers → <code>git add</code> → <code>git rebase --continue</code>; or bail with <code>git rebase --abort</code></td>
+</tr>
+<tr>
+<td><code>git branch -d</code> refuses to delete</td>
+<td>Branch not fully merged</td>
+<td>Confirm it's really unwanted, then <code>git branch -D</code> (capital = force)</td>
+</tr>
+<tr>
+<td>Conflict markers committed into a file</td>
+<td>Resolved sloppily</td>
+<td>Search the repo for <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>; re-edit and recommit</td>
+</tr>
+<tr>
+<td><code>fatal: cannot do a partial commit during a merge</code></td>
+<td>Ran <code>git commit "msg"</code> <strong>without <code>-m</code></strong> — git treats <code>"msg"</code> as a filename</td>
+<td>Use <code>git commit -m "msg"</code> (or bare <code>git commit</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="teaching-tips">Teaching tips<a class="headerlink" href="#teaching-tips" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Type it live and slow.</strong> Project your terminal; students mirror you.</li>
+<li><strong>Celebrate the first commit</strong> (Session 1 §3) and the first push (Session 2 §2) — these
+  are the dopamine moments that make git "click".</li>
+<li>Keep repeating <strong><code>git status</code> is your friend</strong> — it defuses most confusion.</li>
+<li>Tie every concept to the workshop: "the cut that defines your signal region is exactly
+  the kind of thing you'll commit and your teammate will review with <code>git diff</code>."</li>
+<li><strong>The conflict demo (Session 2 §5) is the scariest moment for beginners.</strong> Do it slowly on
+  the projector first, narrate the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>/<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> markers as "git showing you both
+  versions, pick one", and show <code>git rebase --abort</code> early so nobody feels trapped.</li>
+<li>Reassure them a conflict is <strong>not</strong> an error or a lost-work situation — it's git asking a
+  question. <code>git status</code> during a conflict literally tells you the next step.</li>
+</ul>
+<h2 id="optional-prepare-a-team-repo-template">Optional: prepare a team repo template<a class="headerlink" href="#optional-prepare-a-team-repo-template" title="Permanent link">&para;</a></h2>
+<p>If you want teams to start fast, create a template repo containing a ready-made
+<code>.gitignore</code> (the analysis one from <code>cheatsheet.md</code>), a <code>README.md</code> skeleton with
+sections (Decay, MC, Signal region, Fit, Branching ratio, Poster), and empty <code>mc/</code>,
+<code>fits/</code>, <code>plots/</code>, <code>notes/</code> folders (each with a <code>.gitkeep</code>). On GitHub: repo → Settings
+→ check <strong>Template repository</strong>. Teams click <strong>Use this template</strong> to get their own copy.</p>
+<h2 id="what-this-tutorial-deliberately-skips-mention-dont-teach">What this tutorial deliberately skips (mention, don't teach)<a class="headerlink" href="#what-this-tutorial-deliberately-skips-mention-dont-teach" title="Permanent link">&para;</a></h2>
+<p>Interactive rebase (<code>rebase -i</code>), stashing, tags, submodules, cherry-picking, and
+force-pushing. Branches, merges, pull requests, and <em>basic</em> conflict resolution with
+<code>rebase</code> are now covered (Session 1 §7–§8, Session 2 §4–§5). Introduce the rest
+just-in-time when a team actually needs them, so they land with real motivation.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../cheatsheet/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Cheat Sheet">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Cheat Sheet
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Made by Johan A. Colorado Caicedo for the EPIC Summer Program · Content licensed CC BY 4.0
+
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/jcaicedo6" target="_blank" rel="noopener" title="Johan Caicedo on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
