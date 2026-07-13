@@ -315,6 +315,20 @@ git commit -m "Add initial fit script and update status"
     It's handy, but glance at `git status` first so you don't commit something by
     accident — like a 2 GB ROOT file (see [§6](#6-dont-commit-the-huge-stuff-gitignore)).
 
+??? info "`git add`: one file vs. `.` vs. `-A`"
+    Three ways to choose *what* gets staged:
+
+    | Command | What it stages |
+    |---------|----------------|
+    | `git add fit.py` | just that **one file** (safest — you say exactly what) |
+    | `git add .` | **everything under your current folder** (new, modified, and deleted) |
+    | `git add -A` &nbsp;(= `git add --all`) | **everything in the whole repo**, wherever you are |
+    | `git add -u` | only **already-tracked** files that changed (skips brand-new files) |
+
+    From the repo's top folder, `git add .` and `git add -A` do the same thing. They only
+    differ when you're **inside a subfolder**: `.` stages just that subfolder, while `-A`
+    stages the entire repo. When in doubt, `git add <file>` by name and check `git status`.
+
 !!! success "✅ Checkpoint 2"
     `git log --oneline` should now show **two** commits, newest on top:
     ```

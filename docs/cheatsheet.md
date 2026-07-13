@@ -47,6 +47,19 @@ git push                          # share your work
     **already tracks**. It **skips new/untracked files**, so stick with `git add` → `git
     commit` whenever a file is new.
 
+## Staging: what `git add` picks up
+
+```bash
+git add fit.py                    # one specific file (safest)
+git add .                         # everything under the current folder
+git add -A     # = git add --all  # everything in the whole repo, wherever you are
+git add -u                        # only already-tracked files that changed (no new files)
+```
+
+From the repo's top folder, `git add .` and `git add -A` behave the same; they differ only
+inside a subfolder (`.` = this folder, `-A` = whole repo). When unsure, add by name and check
+`git status`.
+
 ## Look around
 
 ```bash
