@@ -6,7 +6,7 @@
     1. :material-check-bold: Git installed on your laptop
     2. :material-github: A GitHub account
     3. :material-card-account-details: Git configured with your identity
-    4. :material-key-chain: An SSH key connecting your laptop to GitHub
+    4. :material-lan-connect: Your laptop connected to GitHub (HTTPS or SSH)
 
     :octicons-clock-16: ~15–20 min &nbsp;·&nbsp; do this once and you're set for the whole
     workshop.

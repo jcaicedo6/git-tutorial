@@ -439,7 +439,7 @@ Create a branch called `try-tighter-cut` and switch to it in one step:
 git switch -c try-tighter-cut
 ```
 
-!!! note "Another way: `git branch` + `git checkout`"
+??? note "Another way: `git branch` + `git checkout`"
     `git switch -c` does two things at once — **create** the branch and **switch** onto it.
     You can also do them as two separate steps with the older commands:
 

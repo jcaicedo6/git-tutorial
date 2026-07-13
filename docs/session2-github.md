@@ -6,9 +6,8 @@
     Requests**, resolving a **merge conflict**, and syncing with `main` via **`git pull`**
     (fetch + merge).
 
-    :octicons-clock-16: ~15 min core (+~15 min for the collaboration deep-dive, §4–§6)
-    &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo from Session 1, plus
-    everything from [Setup](setup.md) (account + a connection method)
+    :octicons-clock-16: ~30 min &nbsp;·&nbsp; :material-tools: the `my_decay_analysis` repo
+    from Session 1, plus everything from [Setup](setup.md) (account + a connection method)
 
 !!! info "Git vs. GitHub"
     **git** is the tool on your laptop (Session 1). **GitHub** is a website that hosts git
@@ -28,18 +27,19 @@
 
 ## 1. Create an empty repository on GitHub
 
-1. Go to you [github.com](https://github.com/) and Sign in.
-2. Click the **+** (top-left) → **New** (New repository).
+1. Go to [github.com](https://github.com/) and sign in.
+2. Click the **+** (top-right) → **New repository**.
 3. **Repository name:** `my_decay_analysis` (matching your folder is tidy, not required).
-4. **Description:** e.g. "Workshop practice analysis repo".
-5. **Public** or **Private** — either is fine for practice. 
+4. **Description** (optional): e.g. "Workshop practice analysis repo".
+5. Choose **Public** or **Private** — either is fine for practice.
+6. **Leave "Add a README", ".gitignore", and "license" UNCHECKED.**
+7. Click **Create repository**.
 
-!!! warning "Leave the checkboxes UNCHECKED"
-    Do **not** tick "Add a README", ".gitignore", or "license". You already have files
-    locally, and adding them here creates a conflict on your first push.
+!!! warning "Why leave those boxes unchecked?"
+    You already have a README and `.gitignore` locally. If GitHub creates them too, your
+    first push is **rejected** for a conflict. Start the online repo empty.
 
-5. Click **Create repository**. On the next page, copy the repo address — click the tab
-   matching how you connected:
+On the next page, copy the repo address — click the tab matching how you connected:
 
 === ":material-lock: HTTPS"
 
@@ -273,8 +273,8 @@ Now open the PR on GitHub:
 !!! info "What a Pull Request actually is"
     A PR is a *request to merge one branch into another*, wrapped in a page for **review and
     discussion**. It shows the diff, lets teammates comment line-by-line, runs any automated
-    checks (tests / CI (Continous Integration)), and records who approved — all *before* the 
-    change touches `main`. It's how real teams keep `main` always working.
+    checks (tests, continuous integration), and records who approved — all *before* the change
+    touches `main`. It's how real teams keep `main` always working.
 
 Back on your laptop, sync the merged result and clean up your local branch:
 
@@ -573,7 +573,7 @@ open a **Pull Request** (as in §4) to merge `retune` into `main`.
     this first push you just type `git push`. Pushing a **branch** never touches `main` — it
     only updates that branch on GitHub. `main` changes only when a PR is merged.
 
-!!! tip "Cleaner history: `git pull --rebase` (fetch + **rebase**)"
+??? tip "Optional: cleaner history with `git pull --rebase` (fetch + **rebase**)"
     Every `git pull` that has to combine work leaves a **merge commit** behind; over a long
     branch these pile up and clutter the history. Many teams prefer **`git pull --rebase`**
     (= `git fetch` + `git rebase`), which *replays* your commits on top of the fetched `main`

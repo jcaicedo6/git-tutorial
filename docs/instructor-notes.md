@@ -50,7 +50,7 @@ By the end students can, on their own laptops:
 > loop. Hammer the "**edit the file, don't `echo`-clobber it; then run it before you
 > commit**" point — it's the habit that keeps a team's analysis working.
 
-### Session 2 — GitHub (~15 min core + ~10 min deep-dive)
+### Session 2 — GitHub (~30 min)
 | Min | Section |
 |-----|---------|
 | 0–4 | §1 Create empty repo (watch the "don't add README" trap; grab the matching URL) |

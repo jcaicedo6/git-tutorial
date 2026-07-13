@@ -12,12 +12,12 @@ hide:
 <p class="byline">Created by <strong>Johan A. Colorado Caicedo</strong> ·
 <a href="https://github.com/jcaicedo6">@jcaicedo6</a></p>
 
-Over this week you will learn how to work as a team in a real-time expirence framed
-within the context of the moderm experimental particle physics. Your
-team will pick a real-world physics problem, generate Monte Carlo simulations, 
-isolate the signal region, tune the simulation, extract a branching ratio, 
-and create a poster—together. Git and GitHub are the tools that allow multiple 
-people to work on the same analysis without having to email the `analysis_final_v3_REALLY_final.py` file.
+Over this week you will learn how to work as a team in a real, hands-on experience framed
+within the context of modern experimental particle physics. Your team will pick a
+real-world physics problem, generate Monte Carlo simulations, isolate the signal region,
+tune the simulation, extract a branching ratio, and create a poster — together. Git and
+GitHub are the tools that let several people work on the same analysis without emailing the
+`analysis_final_v3_REALLY_final.py` file around.
 
 <div class="grid cards" markdown>
 
@@ -25,8 +25,8 @@ people to work on the same analysis without having to email the `analysis_final_
 
     ---
 
-    Do this first. Install git, make a GitHub account, and connect your laptop with an
-    SSH key — with instructions for Windows, macOS, and Linux.
+    Do this first. Install git, make a GitHub account, and connect your laptop to GitHub
+    (HTTPS or SSH) — with instructions for Windows, macOS, and Linux.
 
     :octicons-clock-16: ~15–20 min
 
@@ -47,10 +47,10 @@ people to work on the same analysis without having to email the `analysis_final_
 
     ---
 
-    Push your repo to the cloud over SSH and learn the loop your team will use every
-    day: `clone → pull → commit → push`.
+    Push your repo to GitHub, then learn the real team workflow: the daily loop, Pull
+    Requests, merge conflicts, and `git pull`.
 
-    :octicons-clock-16: ~15 min
+    :octicons-clock-16: ~30 min
 
     [:octicons-arrow-right-24: Start Session 2](session2-github.md)
 
@@ -87,5 +87,5 @@ people to work on the same analysis without having to email the `analysis_final_
     3. **"Anna and I both edited the same file."** → git merges work from many people.
 
 New to all of this? Start with [**Setup · Get Ready**](setup.md) — it walks you through
-installing git, creating a GitHub account, and adding an SSH key on **Windows, macOS, or
+installing git, creating a GitHub account, and connecting to GitHub on **Windows, macOS, or
 Linux**. Once everyone is set up, move on to [**Session 1**](session1-git.md). :rocket:
